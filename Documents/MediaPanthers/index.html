@@ -53,6 +53,137 @@
     }
     .state-center p { font-size: 13px; }
 
+    /* ── Top toolbar ── */
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+    .btn-send-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-send-email:hover { background: #0052cc; }
+    .btn-send-email svg { flex-shrink: 0; }
+
+    /* ── Send-email modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal {
+      background: #fff;
+      border-radius: var(--radius);
+      width: 290px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .modal-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      font-size: 18px;
+      line-height: 1;
+      padding: 0 2px;
+    }
+    .modal-close:hover { color: var(--color-text); }
+    .modal-body { padding: 10px 14px 14px; }
+    .modal-token-row {
+      margin-bottom: 10px;
+    }
+    .modal-token-row label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-bottom: 4px;
+    }
+    .modal-token-row input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      outline: none;
+    }
+    .modal-token-row input:focus { border-color: var(--color-primary); }
+    .modal-contacts-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+    .modal-contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .modal-contact-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.12s, background 0.12s;
+    }
+    .modal-contact-btn:hover { border-color: var(--color-primary); background: #eff6ff; }
+    .modal-contact-btn.loading { opacity: 0.6; pointer-events: none; }
+    .modal-contact-btn.sent { border-color: var(--color-success); background: var(--color-success-bg); }
+    .contact-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .contact-info-name { font-size: 12px; font-weight: 600; }
+    .contact-info-sub { font-size: 11px; color: var(--color-text-muted); }
+    .contact-status-icon { margin-left: auto; font-size: 14px; }
+    .modal-feedback {
+      margin-top: 8px;
+      font-size: 11px;
+      padding: 5px 8px;
+      border-radius: var(--radius-sm);
+    }
+    .modal-feedback.success { background: var(--color-success-bg); color: var(--color-success); }
+    .modal-feedback.error { background: var(--color-danger-bg); color: var(--color-danger); }
+
     /* ── Card wrapper ── */
     .card {
       background: var(--color-bg);
@@ -321,6 +452,18 @@
   </style>
 </head>
 <body>
+  <div class="toolbar">
+    <button class="btn-send-email" onclick="openSendModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+      Send test email
+    </button>
+  </div>
+
+  <div id="modal-root"></div>
+
   <div id="app">
     <div class="state-center">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5">
@@ -583,6 +726,158 @@
       }
 
       renderContact(contact).forEach(node => app.appendChild(node));
+    }
+
+    // ── Send-email modal ──
+    const INBOX_ID = "inb_51jbh";
+    const TO_ADDRESS = "logistics-support@testforfront.com";
+    const TEMPLATE_BODY = `<p>Hi Liz,</p><p>I'm writing to formally raise a complaint regarding the ongoing lack of response to maintenance issues at my property at 42 Elm Street, Manchester, M4 2BX (Ref: LRG-MCR-004821).</p><p>Over the past six weeks I have reported the following issues on three separate occasions with no resolution: a persistent damp patch spreading across the bedroom ceiling, a broken extractor fan in the bathroom causing condensation, and a front door that does not close properly leaving the property unsecured overnight.</p><p>Despite my emails on 14th February, 28th February and 12th March, I have received no acknowledgement, no contractor visit has been arranged, and I have had no update on when these issues will be resolved. This is now affecting my health and my family's safety and I consider this a breach of the landlord's repair obligations under the Landlord and Tenant Act 1985.</p><p>If I do not receive a formal response and a confirmed contractor appointment within 48 hours, I will have no option but to escalate this to the Property Redress Scheme and seek independent legal advice regarding rent withholding.</p><p>I expect to hear from you urgently.<br><br>Leyton Graves<br>Tenant - 42 Elm Street, Manchester, M4 2BX<br>07700 900 312</p>`;
+
+    const SEED_EMAILS = [
+      {
+        key: "leyton",
+        name: "Leyton Graves",
+        email: "leyton@finalproduction.club",
+        subject: "Repeated Failure to Address Maintenance Issues",
+        color: "#0066ff",
+      },
+      {
+        key: "sarah",
+        name: "Sarah Connell",
+        email: "sarah@zestymedia.club",
+        subject: "Repeated Failure to Address Maintenance Issues",
+        color: "#7c3aed",
+      },
+      {
+        key: "liz",
+        name: "Liz Doyle",
+        email: "liz.doyle@cloudcontentconsulting.com",
+        subject: "Repeated Failure to Address Maintenance Issues",
+        color: "#b45309",
+      },
+    ];
+
+    let modalState = { sentKeys: new Set(), loadingKey: null, feedback: null };
+
+    function openSendModal() {
+      modalState = { sentKeys: new Set(), loadingKey: null, feedback: null };
+      renderModal();
+    }
+
+    function closeSendModal() {
+      document.getElementById("modal-root").innerHTML = "";
+    }
+
+    function renderModal() {
+      const root = document.getElementById("modal-root");
+      root.innerHTML = "";
+
+      const storedToken = sessionStorage.getItem("front_api_token") || "";
+
+      const overlay = e("div", { className: "modal-overlay", onClick: (ev) => { if (ev.target === overlay) closeSendModal(); } },
+        e("div", { className: "modal" },
+          e("div", { className: "modal-header" },
+            e("span", { className: "modal-title" }, "Send test email"),
+            e("button", { className: "modal-close", onClick: closeSendModal }, "×")
+          ),
+          e("div", { className: "modal-body" },
+            e("div", { className: "modal-token-row" },
+              e("label", null, "Front API Token"),
+              e("input", {
+                type: "password",
+                id: "modal-token-input",
+                placeholder: "Paste your Front API token…",
+                value: storedToken,
+              })
+            ),
+            e("div", { className: "modal-contacts-label" }, "Choose sender"),
+            e("div", { className: "modal-contact-list" },
+              ...SEED_EMAILS.map(contact => {
+                const isLoading = modalState.loadingKey === contact.key;
+                const isSent = modalState.sentKeys.has(contact.key);
+                let cls = "modal-contact-btn";
+                if (isLoading) cls += " loading";
+                if (isSent) cls += " sent";
+                return e("button", { className: cls, onClick: () => sendEmail(contact) },
+                  e("div", { className: "contact-avatar", style: `background:${contact.color}` },
+                    contact.name[0]
+                  ),
+                  e("div", {},
+                    e("div", { className: "contact-info-name" }, contact.name),
+                    e("div", { className: "contact-info-sub" }, contact.email)
+                  ),
+                  e("span", { className: "contact-status-icon" },
+                    isLoading ? "⏳" : isSent ? "✓" : ""
+                  )
+                );
+              })
+            ),
+            modalState.feedback
+              ? e("div", { className: `modal-feedback ${modalState.feedback.type}` }, modalState.feedback.message)
+              : null
+          )
+        )
+      );
+
+      root.appendChild(overlay);
+    }
+
+    async function sendEmail(contact) {
+      const tokenInput = document.getElementById("modal-token-input");
+      const token = tokenInput ? tokenInput.value.trim() : "";
+      if (!token) {
+        modalState.feedback = { type: "error", message: "Please enter your Front API token first." };
+        renderModal();
+        return;
+      }
+      sessionStorage.setItem("front_api_token", token);
+
+      modalState.loadingKey = contact.key;
+      modalState.feedback = null;
+      renderModal();
+
+      try {
+        const ts = Math.floor(Date.now() / 1000);
+        const ref = String(ts + Math.floor(Math.random() * 1000));
+
+        const res = await fetch(`https://api2.frontapp.com/inboxes/${INBOX_ID}/imported_messages`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sender: { handle: contact.email, name: contact.name, source: "email" },
+            to: [TO_ADDRESS],
+            subject: contact.subject,
+            body: TEMPLATE_BODY,
+            body_format: "html",
+            type: "email",
+            external_id: ref,
+            created_at: ts,
+            metadata: {
+              thread_ref: ref,
+              is_inbound: true,
+              should_skip_rules: false,
+              is_archived: false,
+            },
+          }),
+        });
+
+        modalState.loadingKey = null;
+        if (res.ok || res.status === 202) {
+          modalState.sentKeys.add(contact.key);
+          modalState.feedback = { type: "success", message: `✓ Email from ${contact.name} sent to inbox.` };
+        } else {
+          const text = await res.text();
+          modalState.feedback = { type: "error", message: `Error ${res.status}: ${text.slice(0, 120)}` };
+        }
+      } catch (err) {
+        modalState.loadingKey = null;
+        modalState.feedback = { type: "error", message: `Network error: ${err.message}` };
+      }
+
+      renderModal();
     }
 
     // ── Front SDK integration ──

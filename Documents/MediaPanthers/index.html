@@ -894,33 +894,47 @@
       loadContact(email);
     }
 
-    function showDebug(update, email) {
+    function showDebug(label, data, email) {
       let box = document.getElementById("debug-box");
       if (!box) {
         box = document.createElement("div");
         box.id = "debug-box";
         box.style.cssText = "margin-top:12px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:10px;font-size:10px;font-family:monospace;color:#334155;word-break:break-all;white-space:pre-wrap;";
-        document.getElementById("app").after(box);
+        document.body.appendChild(box);
       }
-      box.textContent = "Resolved email: " + (email || "none") + "\n\n" + JSON.stringify(update, null, 2);
+      box.textContent = "SDK: " + label + "\nEmail: " + (email || "none") + "\n\n" + JSON.stringify(data, null, 2);
     }
 
-    if (window.Front) {
-      window.Front.contextUpdates.subscribe(function (update) {
-        if (!update || update.type === "noConversation") { renderEmpty(); showDebug(update, null); return; }
+    function handleUpdate(update) {
+      if (!update || update.type === "noConversation") {
+        showDebug("noConversation", update, null);
+        renderEmpty(); return;
+      }
+      if (update.type === "conversation") {
+        let email = extractEmail(update);
+        if (!email && update.conversation) email = extractEmail(update.conversation);
+        showDebug("conversation", update, email);
+        render(email); return;
+      }
+      showDebug("unknown type: " + update.type, update, null);
+      renderEmpty();
+    }
 
-        if (update.type === "conversation") {
-          let email = extractEmail(update);
-          if (!email && update.conversation) email = extractEmail(update.conversation);
-          showDebug(update, email);
-          render(email);
-          return;
-        }
+    // Show debug immediately so we can see SDK state
+    showDebug("init — window.Front = " + (typeof window.Front), { frontDefined: typeof window.Front }, null);
 
-        showDebug(update, null);
-        renderEmpty();
+    if (window.Front && window.Front.contextUpdates) {
+      // Observable API (SDK v1)
+      showDebug("using contextUpdates", {}, null);
+      window.Front.contextUpdates.subscribe(handleUpdate);
+    } else if (window.Front && window.Front.on) {
+      // Callback API
+      showDebug("using Front.on", {}, null);
+      window.Front.on("conversation", function(data) {
+        handleUpdate({ type: "conversation", ...data });
       });
     } else {
+      showDebug("no SDK — dev fallback", {}, "leyton@finalproduction.club");
       render("leyton@finalproduction.club");
     }
   </script>

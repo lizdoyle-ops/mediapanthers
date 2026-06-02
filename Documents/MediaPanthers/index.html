@@ -772,8 +772,6 @@
       const root = document.getElementById("modal-root");
       root.innerHTML = "";
 
-      const storedToken = sessionStorage.getItem("front_api_token") || "";
-
       const overlay = e("div", { className: "modal-overlay", onClick: (ev) => { if (ev.target === overlay) closeSendModal(); } },
         e("div", { className: "modal" },
           e("div", { className: "modal-header" },
@@ -781,15 +779,6 @@
             e("button", { className: "modal-close", onClick: closeSendModal }, "×")
           ),
           e("div", { className: "modal-body" },
-            e("div", { className: "modal-token-row" },
-              e("label", null, "Front API Token"),
-              e("input", {
-                type: "password",
-                id: "modal-token-input",
-                placeholder: "Paste your Front API token…",
-                value: storedToken,
-              })
-            ),
             e("div", { className: "modal-contacts-label" }, "Choose sender"),
             e("div", { className: "modal-contact-list" },
               ...SEED_EMAILS.map(contact => {
@@ -823,15 +812,6 @@
     }
 
     async function sendEmail(contact) {
-      const tokenInput = document.getElementById("modal-token-input");
-      const token = tokenInput ? tokenInput.value.trim() : "";
-      if (!token) {
-        modalState.feedback = { type: "error", message: "Please enter your Front API token first." };
-        renderModal();
-        return;
-      }
-      sessionStorage.setItem("front_api_token", token);
-
       modalState.loadingKey = contact.key;
       modalState.feedback = null;
       renderModal();
@@ -840,12 +820,9 @@
         const ts = Math.floor(Date.now() / 1000);
         const ref = String(ts + Math.floor(Math.random() * 1000));
 
-        const res = await fetch(`https://api2.frontapp.com/inboxes/${INBOX_ID}/imported_messages`, {
+        const res = await fetch("/api/send-email", {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             sender: { handle: contact.email, name: contact.name, source: "email" },
             to: [TO_ADDRESS],

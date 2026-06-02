@@ -395,8 +395,8 @@
   </div>
 
   <script>
-    // Change this to your deployed API URL for production
-    const API_BASE = "http://localhost:3000";
+    // Empty string = same origin (works on Vercel). Use "http://localhost:3000" for local dev with node server.js
+    const API_BASE = "";
 
     // Currently loaded email
     let currentEmail = null;

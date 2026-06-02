@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Customer 360</title>
-  <script src="https://dl.frontapp.com/libs/plugin-sdk/1.0.6/frontapp.js"></script>
+  <script src="https://unpkg.com/@frontapp/plugin-sdk/dist/index.umd.js"></script>
   <style>
     :root {
       --color-bg: #ffffff;
@@ -920,15 +920,26 @@
       renderEmpty();
     }
 
-    // Show debug immediately so we can see SDK state
-    showDebug("init — window.Front = " + (typeof window.Front), { frontDefined: typeof window.Front }, null);
+    showDebug("init — FrontPlugin = " + (typeof FrontPlugin) + ", window.Front = " + (typeof window.Front), {}, null);
 
-    if (window.Front && window.Front.contextUpdates) {
-      // Observable API (SDK v1)
+    if (typeof FrontPlugin !== "undefined" && FrontPlugin.create) {
+      // SDK v2 — @frontapp/plugin-sdk
+      showDebug("using FrontPlugin.create()", {}, null);
+      FrontPlugin.create().then(function(plugin) {
+        showDebug("plugin created", {}, null);
+        plugin.on("conversation", function(context) {
+          handleUpdate({ type: "conversation", ...context });
+        });
+      }).catch(function(err) {
+        showDebug("FrontPlugin.create() error: " + err.message, {}, null);
+        render("leyton@finalproduction.club");
+      });
+    } else if (window.Front && window.Front.contextUpdates) {
+      // SDK v1 observable
       showDebug("using contextUpdates", {}, null);
       window.Front.contextUpdates.subscribe(handleUpdate);
     } else if (window.Front && window.Front.on) {
-      // Callback API
+      // SDK v1 callback
       showDebug("using Front.on", {}, null);
       window.Front.on("conversation", function(data) {
         handleUpdate({ type: "conversation", ...data });

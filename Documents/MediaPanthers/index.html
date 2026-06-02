@@ -910,10 +910,17 @@
         showDebug("noConversation", update, null);
         renderEmpty(); return;
       }
-      if (update.type === "conversation") {
-        let email = extractEmail(update);
+      // Front SDK fires "singleConversation" or "conversation"
+      if (update.type === "singleConversation" || update.type === "conversation") {
+        let email = null;
+        // Primary path: conversation.recipient.handle (confirmed from SDK payload)
+        if (update.conversation && update.conversation.recipient && update.conversation.recipient.handle) {
+          email = update.conversation.recipient.handle;
+        }
+        // Fallbacks
+        if (!email) email = extractEmail(update);
         if (!email && update.conversation) email = extractEmail(update.conversation);
-        showDebug("conversation", update, email);
+        showDebug(update.type, update, email);
         render(email); return;
       }
       showDebug("unknown type: " + update.type, update, null);

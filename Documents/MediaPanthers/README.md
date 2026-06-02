@@ -4,7 +4,21 @@ A Front sidebar plugin for Media Panthers support agents. Shows deposit history,
 
 ---
 
-## 1. Seed emails into Front
+## 1. Run the local API
+
+The plugin fetches live data from a local Express server.
+
+```bash
+npm install
+node server.js
+# → Customer 360 API running on http://localhost:3000
+```
+
+Leave this running while using the plugin. The mock data is in-memory — all write actions (retry, lift suspension, etc.) mutate state for the session.
+
+---
+
+## 2. Seed emails into Front
 
 The seed script imports 3 test conversations into inbox `inb_51jbh`.
 

@@ -21,8 +21,6 @@
       --color-warning-bg: #fffbeb;
       --color-gold: #b45309;
       --color-gold-bg: #fef3c7;
-      --color-vip-badge: #92400e;
-      --color-standard-badge: #374151;
       --radius: 8px;
       --radius-sm: 4px;
     }
@@ -38,22 +36,7 @@
       line-height: 1.5;
     }
 
-    #app { min-height: 100vh; }
-
-    /* ── Loading & empty states ── */
-    .state-center {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 48px 16px;
-      color: var(--color-text-muted);
-      gap: 12px;
-      text-align: center;
-    }
-    .state-center p { font-size: 13px; }
-
-    /* ── Top toolbar ── */
+    /* ── Toolbar ── */
     .toolbar {
       display: flex;
       justify-content: flex-end;
@@ -74,7 +57,259 @@
       transition: background 0.15s;
     }
     .btn-send-email:hover { background: #0052cc; }
-    .btn-send-email svg { flex-shrink: 0; }
+
+    /* ── Spinner ── */
+    .spinner-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px;
+      gap: 12px;
+      color: var(--color-text-muted);
+      font-size: 12px;
+    }
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Empty / error states ── */
+    .state-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px;
+      color: var(--color-text-muted);
+      gap: 12px;
+      text-align: center;
+    }
+    .state-center p { font-size: 13px; }
+    .section-error {
+      font-size: 11px;
+      color: var(--color-danger);
+      padding: 6px 0;
+    }
+
+    /* ── Banners ── */
+    .banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .banner-vip     { background: var(--color-gold-bg);    color: var(--color-gold);    border: 1px solid #fcd34d; }
+    .banner-warning { background: var(--color-warning-bg); color: var(--color-warning); border: 1px solid #fcd34d; }
+    .banner-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    /* ── Contact header ── */
+    .contact-header {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .contact-name { font-size: 15px; font-weight: 600; }
+    .header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-vip      { background: var(--color-gold-bg); color: #92400e; border: 1px solid #fcd34d; }
+    .badge-standard { background: #f3f4f6; color: #374151; border: 1px solid var(--color-border); }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .status-pill::before {
+      content: "";
+      display: block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+    .pill-active    { background: var(--color-success-bg); color: var(--color-success); }
+    .pill-active::before { background: var(--color-success); }
+    .pill-suspended { background: var(--color-danger-bg);  color: var(--color-danger);  }
+    .pill-suspended::before { background: var(--color-danger); }
+    .pill-pending   { background: var(--color-warning-bg); color: var(--color-warning); }
+    .pill-pending::before { background: var(--color-warning); }
+
+    /* ── Sections ── */
+    .section {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .section:last-child { border-bottom: none; }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+      margin-bottom: 8px;
+    }
+
+    /* ── Detail grid ── */
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; }
+    .detail-label { font-size: 11px; color: var(--color-text-muted); margin-bottom: 1px; }
+    .detail-value { font-size: 12px; font-weight: 500; }
+    .balance-frozen { color: var(--color-danger); }
+
+    /* ── KYC pill ── */
+    .kyc-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .kyc-verified { background: var(--color-success-bg); color: var(--color-success); }
+    .kyc-pending  { background: var(--color-warning-bg); color: var(--color-warning); }
+
+    /* ── Suspension alert ── */
+    .suspension-alert {
+      background: var(--color-danger-bg);
+      border: 1px solid #fca5a5;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-top: 8px;
+    }
+    .suspension-alert p { color: var(--color-danger); font-size: 12px; font-weight: 500; margin-bottom: 6px; }
+
+    /* ── Action buttons ── */
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-danger   { background: var(--color-danger); color: #fff; }
+    .btn-danger:hover:not(:disabled) { background: #b91c1c; }
+    .btn-warning  { background: var(--color-warning); color: #fff; }
+    .btn-warning:hover:not(:disabled) { background: #b45309; }
+    .btn-primary  { background: var(--color-primary); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: #0052cc; }
+    .btn-success  { background: var(--color-success); color: #fff; }
+    .btn-success:hover:not(:disabled) { background: #15803d; }
+    .btn-ghost {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+    .btn-ghost:hover:not(:disabled) { background: var(--color-border); }
+
+    /* ── Deposit table ── */
+    .deposit-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .deposit-table th {
+      text-align: left;
+      padding: 4px 6px 6px;
+      color: var(--color-text-muted);
+      font-weight: 600;
+      font-size: 11px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .deposit-table td {
+      padding: 5px 6px;
+      vertical-align: top;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .deposit-table tr:last-child td { border-bottom: none; }
+    .row-failed td  { background: #fff5f5; }
+    .row-success td { background: #f0fdf4; }
+    .status-failed  { color: var(--color-danger);  font-weight: 600; }
+    .status-success { color: var(--color-success); font-weight: 600; }
+    .fail-reason { font-size: 10px; color: var(--color-danger); margin-top: 2px; opacity: 0.8; }
+    .bonus-tag { font-size: 10px; color: var(--color-warning); font-weight: 600; }
+
+    /* ── Chips ── */
+    .chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .chips-label { font-size: 11px; color: var(--color-text-muted); width: 100%; margin-bottom: 2px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 14px;
+      background: #eff6ff;
+      color: var(--color-primary);
+      border: 1px solid #bfdbfe;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* ── Tickets ── */
+    .tickets-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+    .tickets-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tickets-label { font-size: 12px; color: var(--color-text-muted); }
+
+    /* ── Notes ── */
+    .notes-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+
+    /* ── Poll status ── */
+    .poll-status { font-size: 11px; color: var(--color-text-muted); margin-top: 6px; }
 
     /* ── Send-email modal ── */
     .modal-overlay {
@@ -100,51 +335,12 @@
       padding: 12px 14px;
       border-bottom: 1px solid var(--color-border);
     }
-    .modal-title {
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--color-text-muted);
-      font-size: 18px;
-      line-height: 1;
-      padding: 0 2px;
-    }
+    .modal-title { font-size: 13px; font-weight: 600; }
+    .modal-close { background: none; border: none; cursor: pointer; color: var(--color-text-muted); font-size: 18px; line-height: 1; }
     .modal-close:hover { color: var(--color-text); }
     .modal-body { padding: 10px 14px 14px; }
-    .modal-token-row {
-      margin-bottom: 10px;
-    }
-    .modal-token-row label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--color-text-muted);
-      margin-bottom: 4px;
-    }
-    .modal-token-row input {
-      width: 100%;
-      padding: 6px 8px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      outline: none;
-    }
-    .modal-token-row input:focus { border-color: var(--color-primary); }
-    .modal-contacts-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--color-text-muted);
-      margin-bottom: 6px;
-    }
-    .modal-contact-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .modal-contacts-label { font-size: 11px; font-weight: 600; color: var(--color-text-muted); margin-bottom: 6px; }
+    .modal-contact-list { display: flex; flex-direction: column; gap: 6px; }
     .modal-contact-btn {
       display: flex;
       align-items: center;
@@ -161,294 +357,20 @@
     .modal-contact-btn.loading { opacity: 0.6; pointer-events: none; }
     .modal-contact-btn.sent { border-color: var(--color-success); background: var(--color-success-bg); }
     .contact-avatar {
-      width: 28px;
-      height: 28px;
+      width: 28px; height: 28px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
     }
     .contact-info-name { font-size: 12px; font-weight: 600; }
-    .contact-info-sub { font-size: 11px; color: var(--color-text-muted); }
+    .contact-info-sub  { font-size: 11px; color: var(--color-text-muted); }
     .contact-status-icon { margin-left: auto; font-size: 14px; }
     .modal-feedback {
-      margin-top: 8px;
-      font-size: 11px;
-      padding: 5px 8px;
-      border-radius: var(--radius-sm);
+      margin-top: 8px; font-size: 11px;
+      padding: 5px 8px; border-radius: var(--radius-sm);
     }
     .modal-feedback.success { background: var(--color-success-bg); color: var(--color-success); }
-    .modal-feedback.error { background: var(--color-danger-bg); color: var(--color-danger); }
-
-    /* ── Card wrapper ── */
-    .card {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-
-    /* ── Banner alerts ── */
-    .banner {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: var(--radius);
-      margin-bottom: 10px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-    .banner-vip {
-      background: var(--color-gold-bg);
-      color: var(--color-gold);
-      border: 1px solid #fcd34d;
-    }
-    .banner-warning {
-      background: var(--color-warning-bg);
-      color: var(--color-warning);
-      border: 1px solid #fcd34d;
-    }
-    .banner-danger {
-      background: var(--color-danger-bg);
-      color: var(--color-danger);
-      border: 1px solid #fca5a5;
-    }
-    .banner-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
-
-    /* ── Contact header ── */
-    .contact-header {
-      padding: 12px 14px 10px;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .contact-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--color-text);
-    }
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    /* ── Badges & pills ── */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-    }
-    .badge-vip {
-      background: var(--color-gold-bg);
-      color: var(--color-vip-badge);
-      border: 1px solid #fcd34d;
-    }
-    .badge-standard {
-      background: #f3f4f6;
-      color: var(--color-standard-badge);
-      border: 1px solid var(--color-border);
-    }
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    .status-pill::before {
-      content: "";
-      display: block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-    .pill-active { background: var(--color-success-bg); color: var(--color-success); }
-    .pill-active::before { background: var(--color-success); }
-    .pill-suspended { background: var(--color-danger-bg); color: var(--color-danger); }
-    .pill-suspended::before { background: var(--color-danger); }
-    .pill-pending { background: var(--color-warning-bg); color: var(--color-warning); }
-    .pill-pending::before { background: var(--color-warning); }
-
-    /* ── Account details grid ── */
-    .section {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--color-border);
-    }
-    .section:last-child { border-bottom: none; }
-    .section-title {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text-muted);
-      margin-bottom: 8px;
-    }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px 8px;
-    }
-    .detail-item {}
-    .detail-label {
-      font-size: 11px;
-      color: var(--color-text-muted);
-      margin-bottom: 1px;
-    }
-    .detail-value {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--color-text);
-    }
-
-    /* ── Suspension alert ── */
-    .suspension-alert {
-      background: var(--color-danger-bg);
-      border: 1px solid #fca5a5;
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-      margin-top: 8px;
-    }
-    .suspension-alert p {
-      color: var(--color-danger);
-      font-size: 12px;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-    .btn-escalate {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: var(--color-danger);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 5px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .btn-escalate:hover { background: #b91c1c; }
-
-    /* ── Deposit table ── */
-    .deposit-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-    .deposit-table th {
-      text-align: left;
-      padding: 4px 6px 6px;
-      color: var(--color-text-muted);
-      font-weight: 600;
-      font-size: 11px;
-      border-bottom: 1px solid var(--color-border);
-    }
-    .deposit-table td {
-      padding: 5px 6px;
-      vertical-align: top;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    .deposit-table tr:last-child td { border-bottom: none; }
-    .row-failed td { background: #fff5f5; }
-    .row-success td { background: #f0fdf4; }
-    .status-failed {
-      color: var(--color-danger);
-      font-weight: 600;
-    }
-    .status-success {
-      color: var(--color-success);
-      font-weight: 600;
-    }
-    .fail-reason {
-      font-size: 10px;
-      color: var(--color-danger);
-      margin-top: 2px;
-      opacity: 0.8;
-    }
-
-    /* ── Payment method chips ── */
-    .chips-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-    .chips-label {
-      font-size: 11px;
-      color: var(--color-text-muted);
-      width: 100%;
-      margin-bottom: 2px;
-    }
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 10px;
-      border-radius: 14px;
-      background: #eff6ff;
-      color: var(--color-primary);
-      border: 1px solid #bfdbfe;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.12s;
-    }
-    .chip:hover { background: #dbeafe; }
-
-    /* ── Account balance ── */
-    .balance-frozen {
-      font-weight: 600;
-      color: var(--color-danger);
-    }
-
-    /* ── Notes ── */
-    .notes-box {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-      font-size: 12px;
-      color: var(--color-text-muted);
-      line-height: 1.5;
-    }
-
-    /* ── Open tickets badge ── */
-    .tickets-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 4px;
-    }
-    .tickets-dot {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--color-primary);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-    }
-    .tickets-label { font-size: 12px; color: var(--color-text-muted); }
+    .modal-feedback.error   { background: var(--color-danger-bg);  color: var(--color-danger);  }
   </style>
 </head>
 <body>
@@ -463,7 +385,6 @@
   </div>
 
   <div id="modal-root"></div>
-
   <div id="app">
     <div class="state-center">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5">
@@ -474,75 +395,20 @@
   </div>
 
   <script>
-    const MOCK_CONTACTS = {
-      "leyton@finalproduction.club": {
-        name: "Leyton",
-        email: "leyton@finalproduction.club",
-        tier: "Standard",
-        account_status: "Active",
-        brand: "Media Panthers",
-        language: "English",
-        joined: "2024-03-15",
-        lifetime_value: "€1,240",
-        last_login: "2026-06-02 09:14",
-        deposits: [
-          { date: "2026-06-02 10:45", amount: "€100", method: "Visa •••• 4242", status: "Failed", reason: "Insufficient funds at bank" },
-          { date: "2026-06-02 10:31", amount: "€100", method: "Visa •••• 4242", status: "Failed", reason: "Bank timeout" },
-          { date: "2026-05-28 14:20", amount: "€50",  method: "Mastercard •••• 9871", status: "Success", reason: null }
-        ],
-        suggested_methods: ["PayPal", "Skrill", "Trustly"],
-        open_tickets: 1,
-        notes: "High-frequency bettor. Usually active during major sporting events."
-      },
-      "sarah@zestymedia.club": {
-        name: "Sarah",
-        email: "sarah@zestymedia.club",
-        tier: "Standard",
-        account_status: "Active",
-        brand: "Roxol — Bahigo",
-        language: "English",
-        joined: "2025-01-08",
-        lifetime_value: "€420",
-        last_login: "2026-06-02 11:02",
-        deposits: [
-          { date: "2026-06-02 11:00", amount: "€50", method: "Mastercard •••• 3310", status: "Failed", reason: "Card declined" },
-          { date: "2026-06-02 10:55", amount: "€50", method: "Visa •••• 7781", status: "Failed", reason: "3DS authentication failed" },
-          { date: "2026-05-30 19:10", amount: "€30", method: "PayPal", status: "Success", reason: null }
-        ],
-        suggested_methods: ["PayPal", "Neteller", "Bank Transfer"],
-        active_bonus: { name: "Weekend Boost", expires: "2026-06-02 23:59", value: "€10 free bet" },
-        open_tickets: 2,
-        notes: "Has an expiring bonus — prioritise resolution."
-      },
-      "liz.doyle@cloudcontentconsulting.com": {
-        name: "Liz",
-        email: "liz.doyle@cloudcontentconsulting.com",
-        tier: "VIP — Bahigo Plus",
-        account_status: "Suspended",
-        suspension_reason: "Automated fraud check — pending manual review",
-        brand: "Roxol — Bahigo Plus",
-        language: "English",
-        joined: "2023-07-22",
-        lifetime_value: "€8,750",
-        last_login: "2026-06-01 22:44",
-        deposits: [
-          { date: "2026-06-01 22:30", amount: "€500", method: "Visa •••• 1122", status: "Success", reason: null },
-          { date: "2026-05-29 18:00", amount: "€200", method: "Visa •••• 1122", status: "Success", reason: null },
-          { date: "2026-05-25 12:15", amount: "€300", method: "Mastercard •••• 4490", status: "Success", reason: null }
-        ],
-        suggested_methods: [],
-        account_balance: "€1,240 (frozen)",
-        open_tickets: 1,
-        notes: "VIP customer. Suspension triggered automatically — escalate to compliance immediately. Do NOT apply standard resolution flow."
-      }
-    };
+    // Change this to your deployed API URL for production
+    const API_BASE = "http://localhost:3000";
 
+    // Currently loaded email
+    let currentEmail = null;
+
+    // ── DOM helper ──────────────────────────────────────────────────────────────
     function e(tag, attrs, ...children) {
       const el = document.createElement(tag);
       if (attrs) Object.entries(attrs).forEach(([k, v]) => {
         if (k === "className") el.className = v;
-        else if (k === "onClick") el.addEventListener("click", v);
+        else if (k.startsWith("on")) el.addEventListener(k.slice(2).toLowerCase(), v);
         else if (k === "innerHTML") el.innerHTML = v;
+        else if (k === "disabled") { if (v) el.disabled = true; }
         else el.setAttribute(k, v);
       });
       children.flat().forEach(c => {
@@ -552,209 +418,374 @@
       return el;
     }
 
-    function statusPillClass(status) {
-      if (status === "Active") return "status-pill pill-active";
-      if (status === "Suspended") return "status-pill pill-suspended";
-      return "status-pill pill-pending";
+    // ── API helpers ─────────────────────────────────────────────────────────────
+    async function apiFetch(path, opts = {}) {
+      const res = await fetch(`${API_BASE}${path}`, {
+        headers: { "Content-Type": "application/json" },
+        ...opts,
+      });
+      const json = await res.json();
+      if (!res.ok) throw Object.assign(new Error(json.error || "API error"), { status: res.status });
+      return json;
     }
 
-    function isVIP(tier) {
-      return tier && tier.toLowerCase().includes("vip");
+    // ── Main load ───────────────────────────────────────────────────────────────
+    async function loadContact(email) {
+      currentEmail = email;
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+      app.appendChild(e("div", { className: "spinner-wrap" },
+        e("div", { className: "spinner" }),
+        e("span", null, "Loading…")
+      ));
+
+      let account, txData, pmData, promoData;
+      const errors = {};
+
+      await Promise.all([
+        apiFetch(`/customers/${encodeURIComponent(email)}/account`)
+          .then(d => { account = d; })
+          .catch(err => { errors.account = err; }),
+        apiFetch(`/customers/${encodeURIComponent(email)}/transactions?limit=5`)
+          .then(d => { txData = d; })
+          .catch(err => { errors.transactions = err; }),
+        apiFetch(`/customers/${encodeURIComponent(email)}/payment-methods`)
+          .then(d => { pmData = d; })
+          .catch(err => { errors.paymentMethods = err; }),
+        apiFetch(`/promotions/active?customer=${encodeURIComponent(email)}`)
+          .then(d => { promoData = d; })
+          .catch(err => { errors.promotions = err; }),
+      ]);
+
+      // If account itself failed with 404, show empty state
+      if (errors.account && errors.account.status === 404) {
+        renderEmpty(); return;
+      }
+      if (!account) {
+        renderError("Failed to load account data."); return;
+      }
+
+      renderContact(email, account, txData, pmData, promoData, errors);
     }
 
     function renderEmpty() {
-      return e("div", { className: "state-center" },
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+      app.appendChild(e("div", { className: "state-center" },
         e("svg", { width: "48", height: "48", viewBox: "0 0 24 24", fill: "none", stroke: "#d1d5db", "stroke-width": "1.5" },
           e("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }),
           e("circle", { cx: "12", cy: "7", r: "4" })
         ),
         e("p", null, "No CRM data found for this contact.")
-      );
+      ));
     }
 
-    function renderContact(contact) {
-      const nodes = [];
+    function renderError(msg) {
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+      app.appendChild(e("div", { className: "state-center" },
+        e("p", { className: "section-error" }, msg)
+      ));
+    }
+
+    // ── Render ──────────────────────────────────────────────────────────────────
+    function renderContact(email, account, txData, pmData, promoData, errors = {}) {
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+
+      const isVIP = account.tier && account.tier.toLowerCase().includes("vip");
+      const isSuspended = account.account_status === "suspended";
+      const transactions = (txData && txData.transactions) || [];
+      const paymentMethods = pmData || { saved: [], suggested_alternatives: [] };
+      const promotions = (promoData && promoData.promotions) || [];
+      const activePromo = promotions.find(p => !p.applied);
+      const lastTxSuccess = transactions.length > 0 && transactions[0].status === "success";
 
       // VIP banner
-      if (isVIP(contact.tier)) {
-        nodes.push(e("div", { className: "banner banner-vip" },
+      if (isVIP) {
+        app.appendChild(e("div", { className: "banner banner-vip" },
           e("span", { className: "banner-icon" }, "⭐"),
           e("span", null, "VIP Customer — assign to dedicated agent")
         ));
       }
 
       // Bonus expiry banner
-      if (contact.active_bonus) {
-        const b = contact.active_bonus;
-        nodes.push(e("div", { className: "banner banner-warning" },
+      if (activePromo) {
+        app.appendChild(e("div", { className: "banner banner-warning" },
           e("span", { className: "banner-icon" }, "⚠️"),
-          e("span", null, `Bonus expiring: ${b.name} — ${b.value} — expires ${b.expires}`)
+          e("span", null, `Bonus expiring: ${activePromo.name} — ${activePromo.value} — expires ${activePromo.expires}`)
         ));
       }
 
-      // Main card
-      const card = e("div", { className: "card" },
+      const card = e("div", { className: "card" });
 
-        // Header
-        e("div", { className: "contact-header" },
-          e("div", { className: "contact-name" }, contact.name),
-          e("div", { className: "header-right" },
-            e("span", { className: isVIP(contact.tier) ? "badge badge-vip" : "badge badge-standard" },
-              isVIP(contact.tier) ? "★ " + contact.tier : contact.tier
-            ),
-            e("span", { className: statusPillClass(contact.account_status) }, contact.account_status)
-          )
-        ),
+      // ── Header ──
+      const statusClass = isSuspended ? "status-pill pill-suspended"
+        : account.account_status === "active" ? "status-pill pill-active"
+        : "status-pill pill-pending";
 
-        // Account details
-        e("div", { className: "section" },
-          e("div", { className: "section-title" }, "Account"),
-          e("div", { className: "detail-grid" },
-            e("div", { className: "detail-item" },
-              e("div", { className: "detail-label" }, "Brand"),
-              e("div", { className: "detail-value" }, contact.brand)
-            ),
-            e("div", { className: "detail-item" },
-              e("div", { className: "detail-label" }, "Language"),
-              e("div", { className: "detail-value" }, contact.language)
-            ),
-            e("div", { className: "detail-item" },
-              e("div", { className: "detail-label" }, "Joined"),
-              e("div", { className: "detail-value" }, contact.joined)
-            ),
-            e("div", { className: "detail-item" },
-              e("div", { className: "detail-label" }, "Lifetime Value"),
-              e("div", { className: "detail-value" }, contact.lifetime_value)
-            ),
-            e("div", { className: "detail-item" },
-              e("div", { className: "detail-label" }, "Last Login"),
-              e("div", { className: "detail-value" }, contact.last_login)
-            ),
-            contact.account_balance
-              ? e("div", { className: "detail-item" },
-                  e("div", { className: "detail-label" }, "Balance"),
-                  e("div", { className: "detail-value balance-frozen" }, contact.account_balance)
-                )
-              : null,
-            contact.open_tickets > 0
-              ? e("div", { className: "detail-item" },
-                  e("div", { className: "detail-label" }, "Open Tickets"),
-                  e("div", { className: "tickets-row" },
-                    e("span", { className: "tickets-dot" }, String(contact.open_tickets)),
-                    e("span", { className: "tickets-label" }, contact.open_tickets === 1 ? "ticket" : "tickets")
-                  )
-                )
-              : null
+      card.appendChild(e("div", { className: "contact-header" },
+        e("div", { className: "contact-name" }, account.name),
+        e("div", { className: "header-right" },
+          e("span", { className: isVIP ? "badge badge-vip" : "badge badge-standard" },
+            isVIP ? `★ ${account.tier}` : account.tier
           ),
+          e("span", { id: "status-pill", className: statusClass }, account.account_status)
+        )
+      ));
 
-          // Suspension alert
-          contact.account_status === "Suspended" && contact.suspension_reason
-            ? e("div", { className: "suspension-alert" },
-                e("p", null, `Suspended: ${contact.suspension_reason}`),
-                e("button", {
-                  className: "btn-escalate",
-                  onClick: () => alert("Escalating to Compliance team…")
-                }, "↑ Escalate to Compliance")
-              )
-            : null
-        ),
-
-        // Deposit history
-        e("div", { className: "section" },
-          e("div", { className: "section-title" }, "Deposit History"),
-          e("table", { className: "deposit-table" },
-            e("thead", null,
-              e("tr", null,
-                e("th", null, "Date"),
-                e("th", null, "Amount"),
-                e("th", null, "Method"),
-                e("th", null, "Status")
-              )
-            ),
-            e("tbody", null,
-              ...contact.deposits.map(d =>
-                e("tr", { className: d.status === "Failed" ? "row-failed" : "row-success" },
-                  e("td", null, d.date),
-                  e("td", null, d.amount),
-                  e("td", null, d.method),
-                  e("td", null,
-                    e("span", { className: d.status === "Failed" ? "status-failed" : "status-success" }, d.status),
-                    d.reason ? e("div", { className: "fail-reason" }, d.reason) : null
-                  )
-                )
-              )
+      // ── Account section ──
+      const accountSection = e("div", { className: "section" },
+        e("div", { className: "section-title" }, "Account"),
+        e("div", { className: "detail-grid" },
+          detailItem("Brand", account.brand),
+          detailItem("Language", account.language),
+          detailItem("Joined", account.joined),
+          detailItem("Lifetime Value", account.lifetime_value),
+          detailItem("Last Login", account.last_login),
+          detailItem("KYC",
+            e("span", { className: account.kyc_status === "verified" ? "kyc-pill kyc-verified" : "kyc-pill kyc-pending" },
+              account.kyc_status === "verified" ? "✓ Verified" : "⏳ Pending"
             )
           ),
-
-          // Suggested payment methods
-          contact.suggested_methods && contact.suggested_methods.length > 0
-            ? e("div", { className: "chips-row" },
-                e("span", { className: "chips-label" }, "Suggested payment methods"),
-                ...contact.suggested_methods.map(m =>
-                  e("span", { className: "chip" }, m)
+          account.account_balance
+            ? detailItem("Balance", e("span", { className: "balance-frozen" }, account.account_balance))
+            : null,
+          account.open_tickets > 0
+            ? e("div", {},
+                e("div", { className: "detail-label" }, "Open Tickets"),
+                e("div", { className: "tickets-row" },
+                  e("span", { className: "tickets-dot" }, String(account.open_tickets)),
+                  e("span", { className: "tickets-label" }, account.open_tickets === 1 ? "ticket" : "tickets")
                 )
               )
             : null
-        ),
-
-        // Notes
-        contact.notes
-          ? e("div", { className: "section" },
-              e("div", { className: "section-title" }, "Agent Notes"),
-              e("div", { className: "notes-box" }, contact.notes)
-            )
-          : null
+        )
       );
 
-      nodes.push(card);
-      return nodes;
-    }
-
-    function render(contactEmail) {
-      const app = document.getElementById("app");
-      app.innerHTML = "";
-
-      if (!contactEmail) {
-        app.appendChild(renderEmpty());
-        return;
+      // Suspension alert + actions
+      if (isSuspended && account.suspension_reason) {
+        const pollStatus = e("div", { id: "poll-status", className: "poll-status" });
+        accountSection.appendChild(e("div", { className: "suspension-alert" },
+          e("p", null, `Suspended: ${account.suspension_reason}`),
+          e("div", { className: "actions-row" },
+            e("button", {
+              className: "btn btn-danger",
+              onClick: () => triggerReview(email, pollStatus),
+              id: "btn-review"
+            }, "↑ Trigger compliance review"),
+            e("button", {
+              className: "btn btn-success",
+              onClick: () => liftSuspension(email),
+              id: "btn-lift"
+            }, "✓ Lift suspension")
+          ),
+          pollStatus
+        ));
       }
 
-      const contact = MOCK_CONTACTS[contactEmail.toLowerCase().trim()];
-      if (!contact) {
-        app.appendChild(renderEmpty());
-        return;
+      card.appendChild(accountSection);
+      if (errors.account) {
+        card.appendChild(e("div", { className: "section" },
+          e("span", { className: "section-error" }, "⚠ Could not load account details")
+        ));
       }
 
-      renderContact(contact).forEach(node => app.appendChild(node));
+      // ── Transactions section ──
+      const txSection = e("div", { className: "section", id: "tx-section" });
+      txSection.appendChild(e("div", { className: "section-title" }, "Deposit History"));
+
+      if (errors.transactions) {
+        txSection.appendChild(e("div", { className: "section-error" }, "⚠ Could not load transactions"));
+      } else {
+        txSection.appendChild(buildTxTable(transactions));
+
+        // Suggested payment methods
+        if (paymentMethods.suggested_alternatives && paymentMethods.suggested_alternatives.length > 0) {
+          txSection.appendChild(e("div", { className: "chips-row" },
+            e("span", { className: "chips-label" }, "Suggested payment methods"),
+            ...paymentMethods.suggested_alternatives.map(m => e("span", { className: "chip" }, m))
+          ));
+        }
+
+        // Action buttons
+        const txActions = e("div", { className: "actions-row", style: "margin-top:10px" });
+
+        // Retry deposit — show if there's a failed tx and a suggested alternative
+        const failedTx = transactions.find(t => t.status === "failed");
+        const altMethod = paymentMethods.suggested_alternatives && paymentMethods.suggested_alternatives[0];
+        if (failedTx && altMethod) {
+          txActions.appendChild(e("button", {
+            className: "btn btn-primary",
+            id: "btn-retry",
+            onClick: () => retryDeposit(email, altMethod)
+          }, `↻ Retry with ${altMethod}`));
+        }
+
+        // Apply promotion — show if active promo and last tx succeeded
+        if (activePromo && lastTxSuccess) {
+          txActions.appendChild(e("button", {
+            className: "btn btn-warning",
+            id: "btn-promo",
+            onClick: () => applyPromotion(email)
+          }, `🎁 Apply promotion`));
+        }
+
+        if (txActions.children.length > 0) txSection.appendChild(txActions);
+      }
+
+      card.appendChild(txSection);
+
+      // ── Notes ──
+      if (account.notes) {
+        card.appendChild(e("div", { className: "section" },
+          e("div", { className: "section-title" }, "Agent Notes"),
+          e("div", { className: "notes-box" }, account.notes)
+        ));
+      }
+
+      app.appendChild(card);
     }
 
-    // ── Send-email modal ──
+    function detailItem(label, value) {
+      const valNode = typeof value === "string" || typeof value === "number"
+        ? e("div", { className: "detail-value" }, String(value))
+        : e("div", { className: "detail-value" }, value);
+      return e("div", {},
+        e("div", { className: "detail-label" }, label),
+        valNode
+      );
+    }
+
+    function buildTxTable(transactions) {
+      return e("table", { className: "deposit-table" },
+        e("thead", null,
+          e("tr", null,
+            e("th", null, "Date"),
+            e("th", null, "Amount"),
+            e("th", null, "Method"),
+            e("th", null, "Status")
+          )
+        ),
+        e("tbody", { id: "tx-tbody" },
+          ...transactions.map(tx => buildTxRow(tx))
+        )
+      );
+    }
+
+    function buildTxRow(tx) {
+      const amt = `€${tx.amount}`;
+      return e("tr", { className: tx.status === "failed" ? "row-failed" : "row-success" },
+        e("td", null, tx.date),
+        e("td", null,
+          amt,
+          tx.bonus ? e("div", { className: "bonus-tag" }, `+${tx.bonus}`) : null
+        ),
+        e("td", null, tx.method),
+        e("td", null,
+          e("span", { className: tx.status === "failed" ? "status-failed" : "status-success" }, tx.status),
+          tx.failure_reason ? e("div", { className: "fail-reason" }, tx.failure_reason) : null
+        )
+      );
+    }
+
+    // ── Actions ─────────────────────────────────────────────────────────────────
+    async function retryDeposit(email, method) {
+      const btn = document.getElementById("btn-retry");
+      if (btn) { btn.disabled = true; btn.textContent = "Retrying…"; }
+      try {
+        const res = await apiFetch(`/customers/${encodeURIComponent(email)}/transactions/retry`, {
+          method: "POST",
+          body: JSON.stringify({ method }),
+        });
+        // Refresh tx list
+        const txData = await apiFetch(`/customers/${encodeURIComponent(email)}/transactions?limit=5`);
+        const tbody = document.getElementById("tx-tbody");
+        if (tbody) {
+          tbody.innerHTML = "";
+          (txData.transactions || []).forEach(tx => tbody.appendChild(buildTxRow(tx)));
+        }
+        if (btn) { btn.disabled = false; btn.textContent = res.transaction.status === "success" ? "✓ Retried" : `↻ Retry with ${method}`; }
+      } catch {
+        if (btn) { btn.disabled = false; btn.textContent = `↻ Retry with ${method}`; }
+      }
+    }
+
+    async function applyPromotion(email) {
+      const btn = document.getElementById("btn-promo");
+      if (btn) { btn.disabled = true; btn.textContent = "Applying…"; }
+      try {
+        const res = await apiFetch(`/customers/${encodeURIComponent(email)}/promotions/apply`, { method: "POST", body: "{}" });
+        // Refresh tx list to show bonus tag
+        const txData = await apiFetch(`/customers/${encodeURIComponent(email)}/transactions?limit=5`);
+        const tbody = document.getElementById("tx-tbody");
+        if (tbody) {
+          tbody.innerHTML = "";
+          (txData.transactions || []).forEach(tx => tbody.appendChild(buildTxRow(tx)));
+        }
+        if (btn) { btn.disabled = true; btn.textContent = `✓ ${res.bonus_applied} applied`; }
+      } catch {
+        if (btn) { btn.disabled = false; btn.textContent = "🎁 Apply promotion"; }
+      }
+    }
+
+    async function triggerReview(email, pollEl) {
+      const btn = document.getElementById("btn-review");
+      if (btn) { btn.disabled = true; btn.textContent = "Triggering…"; }
+      try {
+        const res = await apiFetch(`/customers/${encodeURIComponent(email)}/account/review`, { method: "POST", body: "{}" });
+        if (btn) btn.textContent = `✓ Review ${res.review_id}`;
+        // Poll account status every 3s, up to 15s
+        let attempts = 0;
+        const maxAttempts = 5;
+        if (pollEl) pollEl.textContent = "Polling for status update…";
+        const interval = setInterval(async () => {
+          attempts++;
+          try {
+            const acc = await apiFetch(`/customers/${encodeURIComponent(email)}/account`);
+            const pill = document.getElementById("status-pill");
+            if (pill) {
+              pill.textContent = acc.account_status;
+              pill.className = acc.account_status === "active" ? "status-pill pill-active"
+                : acc.account_status === "suspended" ? "status-pill pill-suspended"
+                : "status-pill pill-pending";
+            }
+            if (pollEl) pollEl.textContent = `Status: ${acc.account_status} (checked ${attempts}/${maxAttempts})`;
+          } catch {}
+          if (attempts >= maxAttempts) {
+            clearInterval(interval);
+            if (pollEl) pollEl.textContent = "Polling complete.";
+          }
+        }, 3000);
+      } catch {
+        if (btn) { btn.disabled = false; btn.textContent = "↑ Trigger compliance review"; }
+      }
+    }
+
+    async function liftSuspension(email) {
+      const btn = document.getElementById("btn-lift");
+      if (btn) { btn.disabled = true; btn.textContent = "Lifting…"; }
+      try {
+        await apiFetch(`/customers/${encodeURIComponent(email)}/account`, {
+          method: "PATCH",
+          body: JSON.stringify({ account_status: "active" }),
+        });
+        // Reload the whole contact panel
+        await loadContact(email);
+      } catch {
+        if (btn) { btn.disabled = false; btn.textContent = "✓ Lift suspension"; }
+      }
+    }
+
+    // ── Send-email modal ─────────────────────────────────────────────────────────
     const INBOX_ID = "inb_51jbh";
     const TO_ADDRESS = "logistics-support@testforfront.com";
     const TEMPLATE_BODY = `<p>Hi Liz,</p><p>I'm writing to formally raise a complaint regarding the ongoing lack of response to maintenance issues at my property at 42 Elm Street, Manchester, M4 2BX (Ref: LRG-MCR-004821).</p><p>Over the past six weeks I have reported the following issues on three separate occasions with no resolution: a persistent damp patch spreading across the bedroom ceiling, a broken extractor fan in the bathroom causing condensation, and a front door that does not close properly leaving the property unsecured overnight.</p><p>Despite my emails on 14th February, 28th February and 12th March, I have received no acknowledgement, no contractor visit has been arranged, and I have had no update on when these issues will be resolved. This is now affecting my health and my family's safety and I consider this a breach of the landlord's repair obligations under the Landlord and Tenant Act 1985.</p><p>If I do not receive a formal response and a confirmed contractor appointment within 48 hours, I will have no option but to escalate this to the Property Redress Scheme and seek independent legal advice regarding rent withholding.</p><p>I expect to hear from you urgently.<br><br>Leyton Graves<br>Tenant - 42 Elm Street, Manchester, M4 2BX<br>07700 900 312</p>`;
 
     const SEED_EMAILS = [
-      {
-        key: "leyton",
-        name: "Leyton Graves",
-        email: "leyton@finalproduction.club",
-        subject: "Repeated Failure to Address Maintenance Issues",
-        color: "#0066ff",
-      },
-      {
-        key: "sarah",
-        name: "Sarah Connell",
-        email: "sarah@zestymedia.club",
-        subject: "Repeated Failure to Address Maintenance Issues",
-        color: "#7c3aed",
-      },
-      {
-        key: "liz",
-        name: "Liz Doyle",
-        email: "liz.doyle@cloudcontentconsulting.com",
-        subject: "Repeated Failure to Address Maintenance Issues",
-        color: "#b45309",
-      },
+      { key: "leyton", name: "Leyton Graves",  email: "leyton@finalproduction.club",              subject: "Repeated Failure to Address Maintenance Issues", color: "#0066ff" },
+      { key: "sarah",  name: "Sarah Connell",  email: "sarah@zestymedia.club",                   subject: "Repeated Failure to Address Maintenance Issues", color: "#7c3aed" },
+      { key: "liz",    name: "Liz Doyle",      email: "liz.doyle@cloudcontentconsulting.com",    subject: "Repeated Failure to Address Maintenance Issues", color: "#b45309" },
     ];
 
     let modalState = { sentKeys: new Set(), loadingKey: null, feedback: null };
@@ -771,8 +802,7 @@
     function renderModal() {
       const root = document.getElementById("modal-root");
       root.innerHTML = "";
-
-      const overlay = e("div", { className: "modal-overlay", onClick: (ev) => { if (ev.target === overlay) closeSendModal(); } },
+      const overlay = e("div", { className: "modal-overlay", onClick: ev => { if (ev.target === overlay) closeSendModal(); } },
         e("div", { className: "modal" },
           e("div", { className: "modal-header" },
             e("span", { className: "modal-title" }, "Send test email"),
@@ -787,17 +817,13 @@
                 let cls = "modal-contact-btn";
                 if (isLoading) cls += " loading";
                 if (isSent) cls += " sent";
-                return e("button", { className: cls, onClick: () => sendEmail(contact) },
-                  e("div", { className: "contact-avatar", style: `background:${contact.color}` },
-                    contact.name[0]
-                  ),
+                return e("button", { className: cls, onClick: () => sendSeedEmail(contact) },
+                  e("div", { className: "contact-avatar", style: `background:${contact.color}` }, contact.name[0]),
                   e("div", {},
                     e("div", { className: "contact-info-name" }, contact.name),
                     e("div", { className: "contact-info-sub" }, contact.email)
                   ),
-                  e("span", { className: "contact-status-icon" },
-                    isLoading ? "⏳" : isSent ? "✓" : ""
-                  )
+                  e("span", { className: "contact-status-icon" }, isLoading ? "⏳" : isSent ? "✓" : "")
                 );
               })
             ),
@@ -807,19 +833,16 @@
           )
         )
       );
-
       root.appendChild(overlay);
     }
 
-    async function sendEmail(contact) {
+    async function sendSeedEmail(contact) {
       modalState.loadingKey = contact.key;
       modalState.feedback = null;
       renderModal();
-
       try {
         const ts = Math.floor(Date.now() / 1000);
         const ref = String(ts + Math.floor(Math.random() * 1000));
-
         const res = await fetch("/api/send-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -832,44 +855,32 @@
             type: "email",
             external_id: ref,
             created_at: ts,
-            metadata: {
-              thread_ref: ref,
-              is_inbound: true,
-              should_skip_rules: false,
-              is_archived: false,
-            },
+            metadata: { thread_ref: ref, is_inbound: true, should_skip_rules: false, is_archived: false },
           }),
         });
-
         modalState.loadingKey = null;
-        if (res.ok || res.status === 202) {
+        if (res.ok) {
           modalState.sentKeys.add(contact.key);
           modalState.feedback = { type: "success", message: `✓ Email from ${contact.name} sent to inbox.` };
         } else {
-          const text = await res.text();
-          modalState.feedback = { type: "error", message: `Error ${res.status}: ${text.slice(0, 120)}` };
+          const json = await res.json().catch(() => ({}));
+          modalState.feedback = { type: "error", message: `Error: ${json.error || res.status}` };
         }
       } catch (err) {
         modalState.loadingKey = null;
         modalState.feedback = { type: "error", message: `Network error: ${err.message}` };
       }
-
       renderModal();
     }
 
-    // ── Front SDK integration ──
+    // ── Front SDK ────────────────────────────────────────────────────────────────
     function extractEmail(conv) {
       if (!conv) return null;
       try {
-        // Primary contact handle (SDK v1 shape)
         if (conv.contact && conv.contact.handle) return conv.contact.handle;
-        // Recipient field
         if (conv.recipient && conv.recipient.handle) return conv.recipient.handle;
-        // Inbound: sender is the customer
         if (conv.sender && conv.sender.handle) return conv.sender.handle;
-        // Some SDK versions nest under .email
         if (conv.contact && conv.contact.email) return conv.contact.email;
-        // Array of recipients
         if (Array.isArray(conv.recipients)) {
           const from = conv.recipients.find(r => r.role === "from" || r.role === "to");
           if (from && from.handle) return from.handle;
@@ -878,24 +889,22 @@
       return null;
     }
 
+    function render(email) {
+      if (!email) { renderEmpty(); return; }
+      loadContact(email);
+    }
+
     if (window.Front) {
       window.Front.contextUpdates.subscribe(function (update) {
-        if (!update) { render(null); return; }
-
-        // No conversation open
-        if (update.type === "noConversation") { render(null); return; }
-
+        if (!update || update.type === "noConversation") { renderEmpty(); return; }
         if (update.type === "conversation") {
-          const conv = update.conversation || update;
-          render(extractEmail(conv));
+          render(extractEmail(update.conversation || update));
           return;
         }
-
-        // Unknown update type — clear the panel
-        render(null);
+        renderEmpty();
       });
     } else {
-      // Dev fallback — show a contact for local testing
+      // Dev fallback
       render("leyton@finalproduction.club");
     }
   </script>

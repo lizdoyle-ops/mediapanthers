@@ -1,0 +1,7 @@
+{
+  "name": "Customer 360",
+  "description": "Shows deposit history and account status for the current contact",
+  "author": "Front SE Demo",
+  "version": "1.0.0",
+  "location": "conversation-sidebar"
+}

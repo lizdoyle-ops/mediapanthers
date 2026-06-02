@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer 360</title>
+  <script src="https://dl.frontapp.com/libs/plugin-sdk/1.0.6/frontapp.js"></script>
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-surface: #f7f8fa;
+      --color-border: #e5e7eb;
+      --color-text: #111827;
+      --color-text-muted: #6b7280;
+      --color-primary: #0066ff;
+      --color-success: #16a34a;
+      --color-success-bg: #f0fdf4;
+      --color-danger: #dc2626;
+      --color-danger-bg: #fef2f2;
+      --color-warning: #d97706;
+      --color-warning-bg: #fffbeb;
+      --color-gold: #b45309;
+      --color-gold-bg: #fef3c7;
+      --color-vip-badge: #92400e;
+      --color-standard-badge: #374151;
+      --radius: 8px;
+      --radius-sm: 4px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 13px;
+      color: var(--color-text);
+      background: var(--color-bg);
+      padding: 12px;
+      line-height: 1.5;
+    }
+
+    #app { min-height: 100vh; }
+
+    /* ── Loading & empty states ── */
+    .state-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px;
+      color: var(--color-text-muted);
+      gap: 12px;
+      text-align: center;
+    }
+    .state-center p { font-size: 13px; }
+
+    /* ── Card wrapper ── */
+    .card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    /* ── Banner alerts ── */
+    .banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .banner-vip {
+      background: var(--color-gold-bg);
+      color: var(--color-gold);
+      border: 1px solid #fcd34d;
+    }
+    .banner-warning {
+      background: var(--color-warning-bg);
+      color: var(--color-warning);
+      border: 1px solid #fcd34d;
+    }
+    .banner-danger {
+      background: var(--color-danger-bg);
+      color: var(--color-danger);
+      border: 1px solid #fca5a5;
+    }
+    .banner-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+    /* ── Contact header ── */
+    .contact-header {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .contact-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── Badges & pills ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .badge-vip {
+      background: var(--color-gold-bg);
+      color: var(--color-vip-badge);
+      border: 1px solid #fcd34d;
+    }
+    .badge-standard {
+      background: #f3f4f6;
+      color: var(--color-standard-badge);
+      border: 1px solid var(--color-border);
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .status-pill::before {
+      content: "";
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .pill-active { background: var(--color-success-bg); color: var(--color-success); }
+    .pill-active::before { background: var(--color-success); }
+    .pill-suspended { background: var(--color-danger-bg); color: var(--color-danger); }
+    .pill-suspended::before { background: var(--color-danger); }
+    .pill-pending { background: var(--color-warning-bg); color: var(--color-warning); }
+    .pill-pending::before { background: var(--color-warning); }
+
+    /* ── Account details grid ── */
+    .section {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .section:last-child { border-bottom: none; }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+      margin-bottom: 8px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 8px;
+    }
+    .detail-item {}
+    .detail-label {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      margin-bottom: 1px;
+    }
+    .detail-value {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    /* ── Suspension alert ── */
+    .suspension-alert {
+      background: var(--color-danger-bg);
+      border: 1px solid #fca5a5;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-top: 8px;
+    }
+    .suspension-alert p {
+      color: var(--color-danger);
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .btn-escalate {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--color-danger);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-escalate:hover { background: #b91c1c; }
+
+    /* ── Deposit table ── */
+    .deposit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .deposit-table th {
+      text-align: left;
+      padding: 4px 6px 6px;
+      color: var(--color-text-muted);
+      font-weight: 600;
+      font-size: 11px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .deposit-table td {
+      padding: 5px 6px;
+      vertical-align: top;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .deposit-table tr:last-child td { border-bottom: none; }
+    .row-failed td { background: #fff5f5; }
+    .row-success td { background: #f0fdf4; }
+    .status-failed {
+      color: var(--color-danger);
+      font-weight: 600;
+    }
+    .status-success {
+      color: var(--color-success);
+      font-weight: 600;
+    }
+    .fail-reason {
+      font-size: 10px;
+      color: var(--color-danger);
+      margin-top: 2px;
+      opacity: 0.8;
+    }
+
+    /* ── Payment method chips ── */
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .chips-label {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      width: 100%;
+      margin-bottom: 2px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 14px;
+      background: #eff6ff;
+      color: var(--color-primary);
+      border: 1px solid #bfdbfe;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .chip:hover { background: #dbeafe; }
+
+    /* ── Account balance ── */
+    .balance-frozen {
+      font-weight: 600;
+      color: var(--color-danger);
+    }
+
+    /* ── Notes ── */
+    .notes-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Open tickets badge ── */
+    .tickets-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tickets-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .tickets-label { font-size: 12px; color: var(--color-text-muted); }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="state-center">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+      </svg>
+      <p>Waiting for conversation…</p>
+    </div>
+  </div>
+
+  <script>
+    const MOCK_CONTACTS = {
+      "leyton@finalproduction.club": {
+        name: "Leyton",
+        email: "leyton@finalproduction.club",
+        tier: "Standard",
+        account_status: "Active",
+        brand: "Media Panthers",
+        language: "English",
+        joined: "2024-03-15",
+        lifetime_value: "€1,240",
+        last_login: "2026-06-02 09:14",
+        deposits: [
+          { date: "2026-06-02 10:45", amount: "€100", method: "Visa •••• 4242", status: "Failed", reason: "Insufficient funds at bank" },
+          { date: "2026-06-02 10:31", amount: "€100", method: "Visa •••• 4242", status: "Failed", reason: "Bank timeout" },
+          { date: "2026-05-28 14:20", amount: "€50",  method: "Mastercard •••• 9871", status: "Success", reason: null }
+        ],
+        suggested_methods: ["PayPal", "Skrill", "Trustly"],
+        open_tickets: 1,
+        notes: "High-frequency bettor. Usually active during major sporting events."
+      },
+      "sarah@zestymedia.club": {
+        name: "Sarah",
+        email: "sarah@zestymedia.club",
+        tier: "Standard",
+        account_status: "Active",
+        brand: "Roxol — Bahigo",
+        language: "English",
+        joined: "2025-01-08",
+        lifetime_value: "€420",
+        last_login: "2026-06-02 11:02",
+        deposits: [
+          { date: "2026-06-02 11:00", amount: "€50", method: "Mastercard •••• 3310", status: "Failed", reason: "Card declined" },
+          { date: "2026-06-02 10:55", amount: "€50", method: "Visa •••• 7781", status: "Failed", reason: "3DS authentication failed" },
+          { date: "2026-05-30 19:10", amount: "€30", method: "PayPal", status: "Success", reason: null }
+        ],
+        suggested_methods: ["PayPal", "Neteller", "Bank Transfer"],
+        active_bonus: { name: "Weekend Boost", expires: "2026-06-02 23:59", value: "€10 free bet" },
+        open_tickets: 2,
+        notes: "Has an expiring bonus — prioritise resolution."
+      },
+      "liz.doyle@cloudcontentconsulting.com": {
+        name: "Liz",
+        email: "liz.doyle@cloudcontentconsulting.com",
+        tier: "VIP — Bahigo Plus",
+        account_status: "Suspended",
+        suspension_reason: "Automated fraud check — pending manual review",
+        brand: "Roxol — Bahigo Plus",
+        language: "English",
+        joined: "2023-07-22",
+        lifetime_value: "€8,750",
+        last_login: "2026-06-01 22:44",
+        deposits: [
+          { date: "2026-06-01 22:30", amount: "€500", method: "Visa •••• 1122", status: "Success", reason: null },
+          { date: "2026-05-29 18:00", amount: "€200", method: "Visa •••• 1122", status: "Success", reason: null },
+          { date: "2026-05-25 12:15", amount: "€300", method: "Mastercard •••• 4490", status: "Success", reason: null }
+        ],
+        suggested_methods: [],
+        account_balance: "€1,240 (frozen)",
+        open_tickets: 1,
+        notes: "VIP customer. Suspension triggered automatically — escalate to compliance immediately. Do NOT apply standard resolution flow."
+      }
+    };
+
+    function e(tag, attrs, ...children) {
+      const el = document.createElement(tag);
+      if (attrs) Object.entries(attrs).forEach(([k, v]) => {
+        if (k === "className") el.className = v;
+        else if (k === "onClick") el.addEventListener("click", v);
+        else if (k === "innerHTML") el.innerHTML = v;
+        else el.setAttribute(k, v);
+      });
+      children.flat().forEach(c => {
+        if (c == null) return;
+        el.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+      });
+      return el;
+    }
+
+    function statusPillClass(status) {
+      if (status === "Active") return "status-pill pill-active";
+      if (status === "Suspended") return "status-pill pill-suspended";
+      return "status-pill pill-pending";
+    }
+
+    function isVIP(tier) {
+      return tier && tier.toLowerCase().includes("vip");
+    }
+
+    function renderEmpty() {
+      return e("div", { className: "state-center" },
+        e("svg", { width: "48", height: "48", viewBox: "0 0 24 24", fill: "none", stroke: "#d1d5db", "stroke-width": "1.5" },
+          e("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }),
+          e("circle", { cx: "12", cy: "7", r: "4" })
+        ),
+        e("p", null, "No CRM data found for this contact.")
+      );
+    }
+
+    function renderContact(contact) {
+      const nodes = [];
+
+      // VIP banner
+      if (isVIP(contact.tier)) {
+        nodes.push(e("div", { className: "banner banner-vip" },
+          e("span", { className: "banner-icon" }, "⭐"),
+          e("span", null, "VIP Customer — assign to dedicated agent")
+        ));
+      }
+
+      // Bonus expiry banner
+      if (contact.active_bonus) {
+        const b = contact.active_bonus;
+        nodes.push(e("div", { className: "banner banner-warning" },
+          e("span", { className: "banner-icon" }, "⚠️"),
+          e("span", null, `Bonus expiring: ${b.name} — ${b.value} — expires ${b.expires}`)
+        ));
+      }
+
+      // Main card
+      const card = e("div", { className: "card" },
+
+        // Header
+        e("div", { className: "contact-header" },
+          e("div", { className: "contact-name" }, contact.name),
+          e("div", { className: "header-right" },
+            e("span", { className: isVIP(contact.tier) ? "badge badge-vip" : "badge badge-standard" },
+              isVIP(contact.tier) ? "★ " + contact.tier : contact.tier
+            ),
+            e("span", { className: statusPillClass(contact.account_status) }, contact.account_status)
+          )
+        ),
+
+        // Account details
+        e("div", { className: "section" },
+          e("div", { className: "section-title" }, "Account"),
+          e("div", { className: "detail-grid" },
+            e("div", { className: "detail-item" },
+              e("div", { className: "detail-label" }, "Brand"),
+              e("div", { className: "detail-value" }, contact.brand)
+            ),
+            e("div", { className: "detail-item" },
+              e("div", { className: "detail-label" }, "Language"),
+              e("div", { className: "detail-value" }, contact.language)
+            ),
+            e("div", { className: "detail-item" },
+              e("div", { className: "detail-label" }, "Joined"),
+              e("div", { className: "detail-value" }, contact.joined)
+            ),
+            e("div", { className: "detail-item" },
+              e("div", { className: "detail-label" }, "Lifetime Value"),
+              e("div", { className: "detail-value" }, contact.lifetime_value)
+            ),
+            e("div", { className: "detail-item" },
+              e("div", { className: "detail-label" }, "Last Login"),
+              e("div", { className: "detail-value" }, contact.last_login)
+            ),
+            contact.account_balance
+              ? e("div", { className: "detail-item" },
+                  e("div", { className: "detail-label" }, "Balance"),
+                  e("div", { className: "detail-value balance-frozen" }, contact.account_balance)
+                )
+              : null,
+            contact.open_tickets > 0
+              ? e("div", { className: "detail-item" },
+                  e("div", { className: "detail-label" }, "Open Tickets"),
+                  e("div", { className: "tickets-row" },
+                    e("span", { className: "tickets-dot" }, String(contact.open_tickets)),
+                    e("span", { className: "tickets-label" }, contact.open_tickets === 1 ? "ticket" : "tickets")
+                  )
+                )
+              : null
+          ),
+
+          // Suspension alert
+          contact.account_status === "Suspended" && contact.suspension_reason
+            ? e("div", { className: "suspension-alert" },
+                e("p", null, `Suspended: ${contact.suspension_reason}`),
+                e("button", {
+                  className: "btn-escalate",
+                  onClick: () => alert("Escalating to Compliance team…")
+                }, "↑ Escalate to Compliance")
+              )
+            : null
+        ),
+
+        // Deposit history
+        e("div", { className: "section" },
+          e("div", { className: "section-title" }, "Deposit History"),
+          e("table", { className: "deposit-table" },
+            e("thead", null,
+              e("tr", null,
+                e("th", null, "Date"),
+                e("th", null, "Amount"),
+                e("th", null, "Method"),
+                e("th", null, "Status")
+              )
+            ),
+            e("tbody", null,
+              ...contact.deposits.map(d =>
+                e("tr", { className: d.status === "Failed" ? "row-failed" : "row-success" },
+                  e("td", null, d.date),
+                  e("td", null, d.amount),
+                  e("td", null, d.method),
+                  e("td", null,
+                    e("span", { className: d.status === "Failed" ? "status-failed" : "status-success" }, d.status),
+                    d.reason ? e("div", { className: "fail-reason" }, d.reason) : null
+                  )
+                )
+              )
+            )
+          ),
+
+          // Suggested payment methods
+          contact.suggested_methods && contact.suggested_methods.length > 0
+            ? e("div", { className: "chips-row" },
+                e("span", { className: "chips-label" }, "Suggested payment methods"),
+                ...contact.suggested_methods.map(m =>
+                  e("span", { className: "chip" }, m)
+                )
+              )
+            : null
+        ),
+
+        // Notes
+        contact.notes
+          ? e("div", { className: "section" },
+              e("div", { className: "section-title" }, "Agent Notes"),
+              e("div", { className: "notes-box" }, contact.notes)
+            )
+          : null
+      );
+
+      nodes.push(card);
+      return nodes;
+    }
+
+    function render(contactEmail) {
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+
+      if (!contactEmail) {
+        app.appendChild(renderEmpty());
+        return;
+      }
+
+      const contact = MOCK_CONTACTS[contactEmail.toLowerCase().trim()];
+      if (!contact) {
+        app.appendChild(renderEmpty());
+        return;
+      }
+
+      renderContact(contact).forEach(node => app.appendChild(node));
+    }
+
+    // ── Front SDK integration ──
+    function extractEmail(conversation) {
+      try {
+        // conversation.recipient or conversation.contact handle
+        if (conversation.contact && conversation.contact.handle) return conversation.contact.handle;
+        if (conversation.recipient && conversation.recipient.handle) return conversation.recipient.handle;
+        // Sometimes the sender is the contact on inbound
+        if (conversation.sender && conversation.sender.handle) return conversation.sender.handle;
+      } catch (_) {}
+      return null;
+    }
+
+    if (window.Front) {
+      window.Front.contextUpdates.subscribe(function (update) {
+        if (!update || update.type !== "conversation") return;
+        const email = extractEmail(update.conversation || update);
+        render(email);
+      });
+    } else {
+      // Dev fallback — show a contact for local testing
+      render("leyton@finalproduction.club");
+    }
+  </script>
+</body>
+</html>

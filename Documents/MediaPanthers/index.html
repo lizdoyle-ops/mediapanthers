@@ -858,22 +858,41 @@
     }
 
     // ── Front SDK integration ──
-    function extractEmail(conversation) {
+    function extractEmail(conv) {
+      if (!conv) return null;
       try {
-        // conversation.recipient or conversation.contact handle
-        if (conversation.contact && conversation.contact.handle) return conversation.contact.handle;
-        if (conversation.recipient && conversation.recipient.handle) return conversation.recipient.handle;
-        // Sometimes the sender is the contact on inbound
-        if (conversation.sender && conversation.sender.handle) return conversation.sender.handle;
+        // Primary contact handle (SDK v1 shape)
+        if (conv.contact && conv.contact.handle) return conv.contact.handle;
+        // Recipient field
+        if (conv.recipient && conv.recipient.handle) return conv.recipient.handle;
+        // Inbound: sender is the customer
+        if (conv.sender && conv.sender.handle) return conv.sender.handle;
+        // Some SDK versions nest under .email
+        if (conv.contact && conv.contact.email) return conv.contact.email;
+        // Array of recipients
+        if (Array.isArray(conv.recipients)) {
+          const from = conv.recipients.find(r => r.role === "from" || r.role === "to");
+          if (from && from.handle) return from.handle;
+        }
       } catch (_) {}
       return null;
     }
 
     if (window.Front) {
       window.Front.contextUpdates.subscribe(function (update) {
-        if (!update || update.type !== "conversation") return;
-        const email = extractEmail(update.conversation || update);
-        render(email);
+        if (!update) { render(null); return; }
+
+        // No conversation open
+        if (update.type === "noConversation") { render(null); return; }
+
+        if (update.type === "conversation") {
+          const conv = update.conversation || update;
+          render(extractEmail(conv));
+          return;
+        }
+
+        // Unknown update type — clear the panel
+        render(null);
       });
     } else {
       // Dev fallback — show a contact for local testing

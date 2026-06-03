@@ -836,60 +836,65 @@
     // ── Send all 3 test emails ───────────────────────────────────────────────────
     const TO_ADDRESS = "support@mediapanthers.com";
 
-    // 10 deposit-failure emails spread across the 3 contacts, reflecting their real mock data
+    // 10 deposit-failure emails crafted to trigger the Deposit Failure playbook.
+    // Trigger keywords: "failed deposit", "deposit error", "can't deposit",
+    // "payment not going through", "which payment methods work".
+    // Senders match Front contact handles so Get Account resolves correctly.
+    // Branch A (VIP Bahigo): sarah@zestymedia.club — Brand: Roxol — Bahigo Plus → routed to VIP Customer
+    // Branch B (standard):   leyton@ + liz.doyle@ — fetches transactions + payment methods → auto-reply + resolve
     const SEED_EMAILS = [
-      // Leyton Graves — Visa •••• 4242 failing (insufficient funds / bank timeout)
+      // ── Leyton Graves — Visa 4242: insufficient funds + bank timeout (Branch B) ──
       {
         name: "Leyton Graves", handle: "leyton@finalproduction.club",
-        subject: "Deposit failed — Visa card not going through",
-        body: "Hi, I've tried to deposit €100 twice today using my Visa card and both times it's failed. The first time said insufficient funds but my bank shows the balance is fine, and the second attempt just timed out. Really frustrated — can you check what's going on?",
-      },
-      {
-        name: "Leyton Graves", handle: "leyton@finalproduction.club",
-        subject: "Still can't deposit — urgent",
-        body: "Hi team, still having the same problem. Three failed deposit attempts now on my Visa ending 4242. Bank says there are no issues on their end. I need to get funds in before tonight's match. Is there an alternative card I can try?",
+        subject: "Deposit error — payment not going through",
+        body: "Hi, I can't deposit — I've had a deposit error twice in the last hour trying to add €100. My Visa card keeps failing. First attempt said there were insufficient funds but my bank balance is fine, second just timed out. Which payment methods work on your platform? I need to get this sorted before tonight.",
       },
       {
         name: "Leyton Graves", handle: "leyton@finalproduction.club",
-        subject: "Deposit failure — need urgent help",
-        body: "I've been trying to deposit €100 for the past hour and every attempt with my Visa is failing. Getting a generic error each time. Can someone from support call me back? This is really urgent.",
+        subject: "Failed deposit — Visa not working",
+        body: "My deposit failed again. Third failed deposit attempt today with my Visa ending 4242. Payment is not going through no matter what I try. Can you tell me which payment methods work right now so I can switch? Really urgent.",
       },
       {
         name: "Leyton Graves", handle: "leyton@finalproduction.club",
-        subject: "Re: Deposit failure — any update?",
-        body: "Just following up on my earlier message. Still unable to deposit. My Visa •••• 4242 has failed 3 times now. I've tried different amounts too. Is Mastercard a better option for me to try instead?",
-      },
-      // Liz Doyle — Mastercard •••• 3310 (card declined) + Visa •••• 7781 (3DS failed)
-      {
-        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
-        subject: "Deposit declined — tried two cards",
-        body: "Hello, I've just tried to deposit €50 and my Mastercard was declined. I then tried my Visa and it failed at the 3D Secure step — the authentication page just errored out. I have a bonus expiring tonight so I really need to get this sorted. Please help ASAP.",
+        subject: "Can't deposit — need help urgently",
+        body: "I can't deposit and I've been trying for over an hour. Getting a deposit error every time. Visa is not going through. What alternative payment methods can I use? I need to place a bet before the match tonight.",
       },
       {
-        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
-        subject: "3DS authentication keeps failing",
-        body: "Hi, every time I try to deposit with my Visa card the 3D Secure authentication fails — I get sent to the verification page and then it just shows an error. My Mastercard is getting flat-out declined. Are there other payment methods available? I have a bonus expiring today.",
+        name: "Leyton Graves", handle: "leyton@finalproduction.club",
+        subject: "Deposit still failing — any alternative?",
+        body: "Still getting deposit errors on my Visa. Three failed deposit attempts, each one fails with a different error. Payment is clearly not going through on this card. Which payment methods work? Is Mastercard or PayPal an option?",
       },
+      // ── Liz Doyle — Mastercard 3310 declined + Visa 7781 3DS fail (Branch B) ──
       {
         name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
-        subject: "Can't complete deposit — authentication issue",
-        body: "Hi there, I'm unable to deposit €50. My Mastercard (ending 3310) was declined and my Visa (ending 7781) failed during 3DS verification. PayPal worked for me last time — is that still available? I need to deposit before my Weekend Boost bonus expires.",
+        subject: "Deposit error — both my cards failing",
+        body: "Hi, I have a deposit error on both my cards. My Mastercard was declined outright and my Visa failed at the 3D Secure authentication step. I can't deposit and I have a bonus expiring tonight. Which payment methods work? Is PayPal available?",
       },
       {
         name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
-        subject: "Two failed deposits — bonus about to expire",
-        body: "Please can someone help urgently. I have two failed deposit attempts today and a bonus that expires at midnight. Mastercard declined, Visa failing at 3D Secure. I've been a customer since January and never had this issue before. What can I do?",
+        subject: "Payment not going through — 3DS failure",
+        body: "My payment is not going through. Tried to deposit €50 and my Visa failed during 3DS authentication — the verification page just errored out. Mastercard also declined. I've had two failed deposits today. Which payment methods work right now?",
       },
-      // Sarah Connell — VIP, suspended account context (trying to deposit but can't access)
+      {
+        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
+        subject: "Can't deposit — tried Visa and Mastercard",
+        body: "I can't deposit. Mastercard (ending 3310) got declined and Visa (ending 7781) failed at 3D Secure. Two failed deposit attempts in the last 10 minutes. I have a Weekend Boost bonus expiring at midnight — please help me find a payment method that works.",
+      },
+      {
+        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
+        subject: "Failed deposits — bonus expiring today",
+        body: "Please help urgently — I've had two failed deposit attempts today and my bonus expires tonight. Deposit error on Mastercard (card declined) and Visa (3DS authentication failed). Which payment methods work? Would PayPal, Neteller or bank transfer go through?",
+      },
+      // ── Sarah Connell — VIP Bahigo Plus, suspended (Branch A → route to VIP Customer) ──
       {
         name: "Sarah Connell", handle: "sarah@zestymedia.club",
-        subject: "Deposit failing — is my account OK?",
-        body: "Hi, I made a €500 deposit last night and it went through fine, but now I'm trying to add more funds and getting an error. Is there a problem with my account? I'm a VIP member and this is very unusual. Please look into this urgently.",
+        subject: "Can't deposit — account suspended",
+        body: "Hi, I can't deposit. My payment is not going through and when I try to log in I'm getting an 'account suspended' message. I'm a VIP member with €1,240 in my account and I haven't done anything wrong. This is a deposit error I need resolved immediately — please escalate.",
       },
       {
         name: "Sarah Connell", handle: "sarah@zestymedia.club",
-        subject: "Unable to deposit — account access issue",
-        body: "Hello, I deposited €200 recently without issues but now I'm being blocked when trying to add more funds. I'm also having trouble logging in — I keep seeing an 'account suspended' message. I have €1,240 in my account and haven't done anything wrong. Please escalate this immediately.",
+        subject: "Deposit error — VIP account blocked",
+        body: "I'm unable to deposit and my account appears to be suspended. I had a successful €500 deposit just yesterday and now I'm getting a deposit error and can't access my funds. Payment is not going through and I can't even log in. I need urgent VIP support — please escalate this now.",
       },
     ];
 

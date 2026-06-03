@@ -835,12 +835,26 @@
 
     // ── Send all 3 test emails ───────────────────────────────────────────────────
     const TO_ADDRESS = "logistics-support@testforfront.com";
-    const TEMPLATE_BODY = `<p>Hi Liz,</p><p>I'm writing to formally raise a complaint regarding the ongoing lack of response to maintenance issues at my property at 42 Elm Street, Manchester, M4 2BX (Ref: LRG-MCR-004821).</p><p>Over the past six weeks I have reported the following issues on three separate occasions with no resolution: a persistent damp patch spreading across the bedroom ceiling, a broken extractor fan in the bathroom causing condensation, and a front door that does not close properly leaving the property unsecured overnight.</p><p>Despite my emails on 14th February, 28th February and 12th March, I have received no acknowledgement, no contractor visit has been arranged, and I have had no update on when these issues will be resolved. This is now affecting my health and my family's safety and I consider this a breach of the landlord's repair obligations under the Landlord and Tenant Act 1985.</p><p>If I do not receive a formal response and a confirmed contractor appointment within 48 hours, I will have no option but to escalate this to the Property Redress Scheme and seek independent legal advice regarding rent withholding.</p><p>I expect to hear from you urgently.<br><br>Leyton Graves<br>Tenant - 42 Elm Street, Manchester, M4 2BX<br>07700 900 312</p>`;
 
     const SEED_EMAILS = [
-      { name: "Leyton Graves", email: "leyton@finalproduction.club",           subject: "Repeated Failure to Address Maintenance Issues" },
-      { name: "Sarah Connell", email: "sarah@zestymedia.club",                subject: "Repeated Failure to Address Maintenance Issues" },
-      { name: "Liz Doyle",    email: "liz.doyle@cloudcontentconsulting.com", subject: "Repeated Failure to Address Maintenance Issues" },
+      {
+        name: "Leyton",
+        email: "leyton@finalproduction.club",
+        subject: "My deposit keeps failing",
+        body: "<p>Hi, I've tried to deposit €100 three times in the last hour and it keeps failing. Each time I get a generic error. I really need this sorted — I'm trying to place a bet before the match starts tonight. Please help ASAP.</p>",
+      },
+      {
+        name: "Sarah",
+        email: "sarah@zestymedia.club",
+        subject: "Deposit failed - which payment methods work?",
+        body: "<p>Hello, my deposit of €50 failed twice. I tried Visa and Mastercard. Are there other payment options I can use? I have a bonus expiring today so I really need to get this sorted quickly. Thanks, Sarah</p>",
+      },
+      {
+        name: "Liz",
+        email: "liz.doyle@cloudcontentconsulting.com",
+        subject: "Can't log into my account",
+        body: "<p>Hi there, I've been trying to log in for the past 30 minutes and keep getting \"account suspended\" error. I haven't done anything wrong and I have funds in my account. I tried resetting my password but still can't get in. Please help.</p>",
+      },
     ];
 
     async function sendAllEmails(btn) {
@@ -858,7 +872,7 @@
             sender: { handle: contact.email, name: contact.name, source: "email" },
             to: [TO_ADDRESS],
             subject: contact.subject,
-            body: TEMPLATE_BODY,
+            body: contact.body,
             body_format: "html",
             type: "email",
             external_id: ref,

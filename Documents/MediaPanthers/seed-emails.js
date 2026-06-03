@@ -41,18 +41,21 @@ const TEMPLATE_BODY = `<p>Hi Liz,</p><p>I'm writing to formally raise a complain
 const emails = [
   {
     label: "Leyton — deposit failure",
-    sender: { handle: "leyton@finalproduction.club", name: "Leyton Graves", source: "email" },
-    subject: "Repeated Failure to Address Maintenance Issues",
+    sender: { handle: "+15550000101", name: "Leyton", source: "sms" },
+    subject: "My deposit keeps failing",
+    body: "Hi, I've tried to deposit €100 three times in the last hour and it keeps failing. Each time I get a generic error. I really need this sorted — I'm trying to place a bet before the match starts tonight. Please help ASAP.",
   },
   {
     label: "Sarah — deposit failure with payment method question",
-    sender: { handle: "sarah@zestymedia.club", name: "Sarah Connell", source: "email" },
-    subject: "Repeated Failure to Address Maintenance Issues",
+    sender: { handle: "+15550000102", name: "Sarah", source: "sms" },
+    subject: "Deposit failed - which payment methods work?",
+    body: "Hello, my deposit of €50 failed twice. I tried Visa and Mastercard. Are there other payment options I can use? I have a bonus expiring today so I really need to get this sorted quickly. Thanks, Sarah",
   },
   {
     label: "Liz — account access issue",
-    sender: { handle: "liz.doyle@cloudcontentconsulting.com", name: "Liz Doyle", source: "email" },
-    subject: "Repeated Failure to Address Maintenance Issues",
+    sender: { handle: "+15550000103", name: "Liz", source: "sms" },
+    subject: "Can't log into my account",
+    body: "Hi there, I've been trying to log in for the past 30 minutes and keep getting 'account suspended' error. I haven't done anything wrong and I have funds in my account. I tried resetting my password but still can't get in. Please help.",
   },
 ];
 
@@ -65,9 +68,8 @@ const emails = [
       sender: email.sender,
       to: [TO_ADDRESS],
       subject: email.subject,
-      body: TEMPLATE_BODY,
-      body_format: "html",
-      type: "email",
+      body: email.body,
+      type: "sms",
       external_id: String(ref),
       created_at: ts,
       metadata: {

@@ -25,7 +25,7 @@ const customers = {
     notes: "High-frequency bettor. Usually active during major sporting events.",
   },
   "sarah@zestymedia.club": {
-    name: "Liz Doyle",
+    name: "Sarah Connell",
     email: "sarah@zestymedia.club",
     tier: "VIP — Bahigo Plus",
     account_status: "suspended",
@@ -41,7 +41,7 @@ const customers = {
     notes: "VIP customer. Suspension triggered automatically — escalate to compliance immediately. Do NOT apply standard resolution flow.",
   },
   "liz.doyle@cloudcontentconsulting.com": {
-    name: "Sarah Connell",
+    name: "Liz Doyle",
     email: "liz.doyle@cloudcontentconsulting.com",
     tier: "Standard",
     account_status: "active",

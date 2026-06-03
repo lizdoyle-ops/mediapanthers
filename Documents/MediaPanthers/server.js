@@ -25,24 +25,8 @@ const customers = {
     notes: "High-frequency bettor. Usually active during major sporting events.",
   },
   "sarah@zestymedia.club": {
-    name: "Sarah Connell",
-    email: "sarah@zestymedia.club",
-    tier: "Standard",
-    account_status: "active",
-    brand: "Roxol — Bahigo",
-    language: "English",
-    joined: "2025-01-08",
-    lifetime_value: 420,
-    last_login: "2026-06-02 11:02",
-    kyc_status: "verified",
-    account_balance: null,
-    suspension_reason: null,
-    open_tickets: 2,
-    notes: "Has an expiring bonus — prioritise resolution.",
-  },
-  "liz.doyle@cloudcontentconsulting.com": {
     name: "Liz Doyle",
-    email: "liz.doyle@cloudcontentconsulting.com",
+    email: "sarah@zestymedia.club",
     tier: "VIP — Bahigo Plus",
     account_status: "suspended",
     brand: "Roxol — Bahigo Plus",
@@ -56,6 +40,22 @@ const customers = {
     open_tickets: 1,
     notes: "VIP customer. Suspension triggered automatically — escalate to compliance immediately. Do NOT apply standard resolution flow.",
   },
+  "liz.doyle@cloudcontentconsulting.com": {
+    name: "Sarah Connell",
+    email: "liz.doyle@cloudcontentconsulting.com",
+    tier: "Standard",
+    account_status: "active",
+    brand: "Roxol — Bahigo",
+    language: "English",
+    joined: "2025-01-08",
+    lifetime_value: 420,
+    last_login: "2026-06-02 11:02",
+    kyc_status: "verified",
+    account_balance: null,
+    suspension_reason: null,
+    open_tickets: 2,
+    notes: "Has an expiring bonus — prioritise resolution.",
+  },
 };
 
 const transactions = {
@@ -65,14 +65,14 @@ const transactions = {
     { id: "tx_003", date: "2026-05-28 14:20", amount:  50, currency: "EUR", method: "Mastercard •••• 9871", status: "success", failure_reason: null,                         type: "deposit" },
   ],
   "sarah@zestymedia.club": [
-    { id: "tx_004", date: "2026-06-02 11:00", amount: 50, currency: "EUR", method: "Mastercard •••• 3310", status: "failed",  failure_reason: "Card declined",              type: "deposit" },
-    { id: "tx_005", date: "2026-06-02 10:55", amount: 50, currency: "EUR", method: "Visa •••• 7781",       status: "failed",  failure_reason: "3DS authentication failed", type: "deposit" },
-    { id: "tx_006", date: "2026-05-30 19:10", amount: 30, currency: "EUR", method: "PayPal",               status: "success", failure_reason: null,                         type: "deposit" },
-  ],
-  "liz.doyle@cloudcontentconsulting.com": [
     { id: "tx_007", date: "2026-06-01 22:30", amount: 500, currency: "EUR", method: "Visa •••• 1122",       status: "success", failure_reason: null, type: "deposit" },
     { id: "tx_008", date: "2026-05-29 18:00", amount: 200, currency: "EUR", method: "Visa •••• 1122",       status: "success", failure_reason: null, type: "deposit" },
     { id: "tx_009", date: "2026-05-25 12:15", amount: 300, currency: "EUR", method: "Mastercard •••• 4490", status: "success", failure_reason: null, type: "deposit" },
+  ],
+  "liz.doyle@cloudcontentconsulting.com": [
+    { id: "tx_004", date: "2026-06-02 11:00", amount: 50, currency: "EUR", method: "Mastercard •••• 3310", status: "failed",  failure_reason: "Card declined",              type: "deposit" },
+    { id: "tx_005", date: "2026-06-02 10:55", amount: 50, currency: "EUR", method: "Visa •••• 7781",       status: "failed",  failure_reason: "3DS authentication failed", type: "deposit" },
+    { id: "tx_006", date: "2026-05-30 19:10", amount: 30, currency: "EUR", method: "PayPal",               status: "success", failure_reason: null,                         type: "deposit" },
   ],
 };
 
@@ -86,26 +86,26 @@ const paymentMethods = {
   },
   "sarah@zestymedia.club": {
     saved: [
-      { id: "pm_003", type: "mastercard", last4: "3310", last_status: "failed" },
-      { id: "pm_004", type: "visa",       last4: "7781", last_status: "failed" },
-    ],
-    suggested_alternatives: ["PayPal", "Neteller", "Bank Transfer"],
-  },
-  "liz.doyle@cloudcontentconsulting.com": {
-    saved: [
       { id: "pm_005", type: "visa",       last4: "1122", last_status: "success" },
       { id: "pm_006", type: "mastercard", last4: "4490", last_status: "success" },
     ],
     suggested_alternatives: [],
   },
+  "liz.doyle@cloudcontentconsulting.com": {
+    saved: [
+      { id: "pm_003", type: "mastercard", last4: "3310", last_status: "failed" },
+      { id: "pm_004", type: "visa",       last4: "7781", last_status: "failed" },
+    ],
+    suggested_alternatives: ["PayPal", "Neteller", "Bank Transfer"],
+  },
 };
 
 const promotions = {
   "leyton@finalproduction.club": [],
-  "sarah@zestymedia.club": [
+  "sarah@zestymedia.club": [],
+  "liz.doyle@cloudcontentconsulting.com": [
     { id: "promo_001", name: "Weekend Boost", value: "€10 free bet", expires: "2026-06-02 23:59", brand: "Roxol — Bahigo", applied: false },
   ],
-  "liz.doyle@cloudcontentconsulting.com": [],
 };
 
 const sessions = {
@@ -114,13 +114,13 @@ const sessions = {
     { timestamp: "2026-06-01 21:05", ip: "185.34.22.11", status: "success", device: "Chrome / macOS" },
   ],
   "sarah@zestymedia.club": [
-    { timestamp: "2026-06-02 11:02", ip: "94.12.88.201",  status: "success", device: "Safari / iPhone" },
-    { timestamp: "2026-06-01 18:30", ip: "94.12.88.201",  status: "success", device: "Safari / iPhone" },
-  ],
-  "liz.doyle@cloudcontentconsulting.com": [
     { timestamp: "2026-06-02 09:22", ip: "212.54.11.99", status: "blocked", device: "Chrome / Windows", reason: "Account suspended" },
     { timestamp: "2026-06-02 09:18", ip: "212.54.11.99", status: "blocked", device: "Chrome / Windows", reason: "Account suspended" },
     { timestamp: "2026-06-01 22:44", ip: "212.54.11.99", status: "success", device: "Chrome / Windows" },
+  ],
+  "liz.doyle@cloudcontentconsulting.com": [
+    { timestamp: "2026-06-02 11:02", ip: "94.12.88.201", status: "success", device: "Safari / iPhone" },
+    { timestamp: "2026-06-01 18:30", ip: "94.12.88.201", status: "success", device: "Safari / iPhone" },
   ],
 };
 

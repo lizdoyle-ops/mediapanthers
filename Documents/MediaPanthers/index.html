@@ -836,24 +836,60 @@
     // ── Send all 3 test emails ───────────────────────────────────────────────────
     const TO_ADDRESS = "support@mediapanthers.com";
 
+    // 10 deposit-failure emails spread across the 3 contacts, reflecting their real mock data
     const SEED_EMAILS = [
+      // Leyton Graves — Visa •••• 4242 failing (insufficient funds / bank timeout)
       {
-        name: "Leyton Graves",
-        handle: "leyton@finalproduction.club",
-        subject: "My deposit keeps failing",
-        body: "Hi, I've tried to deposit €100 three times in the last hour and it keeps failing. Each time I get a generic error. I really need this sorted — I'm trying to place a bet before the match starts tonight. Please help ASAP.",
+        name: "Leyton Graves", handle: "leyton@finalproduction.club",
+        subject: "Deposit failed — Visa card not going through",
+        body: "Hi, I've tried to deposit €100 twice today using my Visa card and both times it's failed. The first time said insufficient funds but my bank shows the balance is fine, and the second attempt just timed out. Really frustrated — can you check what's going on?",
       },
       {
-        name: "Sarah Connell",
-        handle: "sarah@zestymedia.club",
-        subject: "Deposit failed - which payment methods work?",
-        body: "Hello, my deposit of €50 failed twice. I tried Visa and Mastercard. Are there other payment options I can use? I have a bonus expiring today so I really need to get this sorted quickly. Thanks, Sarah",
+        name: "Leyton Graves", handle: "leyton@finalproduction.club",
+        subject: "Still can't deposit — urgent",
+        body: "Hi team, still having the same problem. Three failed deposit attempts now on my Visa ending 4242. Bank says there are no issues on their end. I need to get funds in before tonight's match. Is there an alternative card I can try?",
       },
       {
-        name: "Liz Doyle",
-        handle: "liz.doyle@cloudcontentconsulting.com",
-        subject: "Can't log into my account",
-        body: "Hi there, I've been trying to log in for the past 30 minutes and keep getting 'account suspended' error. I haven't done anything wrong and I have funds in my account. I tried resetting my password but still can't get in. Please help.",
+        name: "Leyton Graves", handle: "leyton@finalproduction.club",
+        subject: "Deposit failure — need urgent help",
+        body: "I've been trying to deposit €100 for the past hour and every attempt with my Visa is failing. Getting a generic error each time. Can someone from support call me back? This is really urgent.",
+      },
+      {
+        name: "Leyton Graves", handle: "leyton@finalproduction.club",
+        subject: "Re: Deposit failure — any update?",
+        body: "Just following up on my earlier message. Still unable to deposit. My Visa •••• 4242 has failed 3 times now. I've tried different amounts too. Is Mastercard a better option for me to try instead?",
+      },
+      // Liz Doyle — Mastercard •••• 3310 (card declined) + Visa •••• 7781 (3DS failed)
+      {
+        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
+        subject: "Deposit declined — tried two cards",
+        body: "Hello, I've just tried to deposit €50 and my Mastercard was declined. I then tried my Visa and it failed at the 3D Secure step — the authentication page just errored out. I have a bonus expiring tonight so I really need to get this sorted. Please help ASAP.",
+      },
+      {
+        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
+        subject: "3DS authentication keeps failing",
+        body: "Hi, every time I try to deposit with my Visa card the 3D Secure authentication fails — I get sent to the verification page and then it just shows an error. My Mastercard is getting flat-out declined. Are there other payment methods available? I have a bonus expiring today.",
+      },
+      {
+        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
+        subject: "Can't complete deposit — authentication issue",
+        body: "Hi there, I'm unable to deposit €50. My Mastercard (ending 3310) was declined and my Visa (ending 7781) failed during 3DS verification. PayPal worked for me last time — is that still available? I need to deposit before my Weekend Boost bonus expires.",
+      },
+      {
+        name: "Liz Doyle", handle: "liz.doyle@cloudcontentconsulting.com",
+        subject: "Two failed deposits — bonus about to expire",
+        body: "Please can someone help urgently. I have two failed deposit attempts today and a bonus that expires at midnight. Mastercard declined, Visa failing at 3D Secure. I've been a customer since January and never had this issue before. What can I do?",
+      },
+      // Sarah Connell — VIP, suspended account context (trying to deposit but can't access)
+      {
+        name: "Sarah Connell", handle: "sarah@zestymedia.club",
+        subject: "Deposit failing — is my account OK?",
+        body: "Hi, I made a €500 deposit last night and it went through fine, but now I'm trying to add more funds and getting an error. Is there a problem with my account? I'm a VIP member and this is very unusual. Please look into this urgently.",
+      },
+      {
+        name: "Sarah Connell", handle: "sarah@zestymedia.club",
+        subject: "Unable to deposit — account access issue",
+        body: "Hello, I deposited €200 recently without issues but now I'm being blocked when trying to add more funds. I'm also having trouble logging in — I keep seeing an 'account suspended' message. I have €1,240 in my account and haven't done anything wrong. Please escalate this immediately.",
       },
     ];
 

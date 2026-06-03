@@ -79,10 +79,12 @@ const paymentMethods = {
 };
 
 const promotions = {
-  "leyton@finalproduction.club": [],
+  "leyton@finalproduction.club": [
+    { id: "promo_002", name: "World Cup 2026", value: "€20 free bet", expires: "2026-07-15 23:59", brand: "Media Panthers", applied: false },
+  ],
   "sarah@zestymedia.club": [],
   "liz.doyle@cloudcontentconsulting.com": [
-    { id: "promo_001", name: "Weekend Boost", value: "€10 free bet", expires: "2026-06-02 23:59", brand: "Roxol — Bahigo", applied: false },
+    { id: "promo_001", name: "World Cup 2026", value: "€10 free bet", expires: "2026-07-15 23:59", brand: "Roxol — Bahigo", applied: false },
   ],
 };
 

@@ -834,24 +834,24 @@
     }
 
     // ── Send all 3 test emails ───────────────────────────────────────────────────
-    const TO_ADDRESS = "+15559881706";
+    const TO_ADDRESS = "support@mediapanthers.com";
 
     const SEED_EMAILS = [
       {
-        name: "Leyton",
-        handle: "+15550000101",
+        name: "Leyton Graves",
+        handle: "leyton@finalproduction.club",
         subject: "My deposit keeps failing",
         body: "Hi, I've tried to deposit €100 three times in the last hour and it keeps failing. Each time I get a generic error. I really need this sorted — I'm trying to place a bet before the match starts tonight. Please help ASAP.",
       },
       {
-        name: "Sarah",
-        handle: "+15550000102",
+        name: "Sarah Connell",
+        handle: "sarah@zestymedia.club",
         subject: "Deposit failed - which payment methods work?",
         body: "Hello, my deposit of €50 failed twice. I tried Visa and Mastercard. Are there other payment options I can use? I have a bonus expiring today so I really need to get this sorted quickly. Thanks, Sarah",
       },
       {
-        name: "Liz",
-        handle: "+15550000103",
+        name: "Liz Doyle",
+        handle: "liz.doyle@cloudcontentconsulting.com",
         subject: "Can't log into my account",
         body: "Hi there, I've been trying to log in for the past 30 minutes and keep getting 'account suspended' error. I haven't done anything wrong and I have funds in my account. I tried resetting my password but still can't get in. Please help.",
       },
@@ -869,11 +869,12 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            sender: { handle: contact.handle, name: contact.name, source: "sms" },
+            sender: { handle: contact.handle, name: contact.name },
             to: [TO_ADDRESS],
             subject: contact.subject,
             body: contact.body,
-            type: "sms",
+            body_format: "html",
+            type: "email",
             external_id: ref,
             created_at: ts,
             metadata: { thread_ref: ref, is_inbound: true, should_skip_rules: false, is_archived: false },

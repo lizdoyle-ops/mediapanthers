@@ -2,7 +2,7 @@
 
 const FRONT_API_TOKEN = process.env.FRONT_API_TOKEN;
 const INBOX_ID = "inb_51jbh";
-const TO_ADDRESS = "logistics-support@testforfront.com";
+const TO_ADDRESS = "+15559881706";
 
 if (!FRONT_API_TOKEN) {
   console.error("Error: FRONT_API_TOKEN environment variable is not set.");

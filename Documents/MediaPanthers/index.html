@@ -924,9 +924,17 @@
       // Front SDK fires "singleConversation" or "conversation"
       if (update.type === "singleConversation" || update.type === "conversation") {
         let email = null;
-        // Primary path: conversation.recipient.handle (confirmed from SDK payload)
-        if (update.conversation && update.conversation.recipient && update.conversation.recipient.handle) {
-          email = update.conversation.recipient.handle;
+        if (update.conversation && update.conversation.recipient) {
+          const recipient = update.conversation.recipient;
+          // For email conversations, handle is directly the email address
+          if (recipient.handle && recipient.handle.includes("@")) {
+            email = recipient.handle;
+          }
+          // For WhatsApp/SMS/phone conversations, look through the contact's handles array for an email type
+          if (!email && recipient.contact && Array.isArray(recipient.contact.handles)) {
+            const emailHandle = recipient.contact.handles.find(function(h) { return h.type === "email"; });
+            if (emailHandle) email = emailHandle.handle;
+          }
         }
         // Fallbacks
         if (!email) email = extractEmail(update);
